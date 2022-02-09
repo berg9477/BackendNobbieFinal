@@ -1,15 +1,31 @@
 package Backend.NobbieFinal.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "babyNames")
 public class BabyName {
+
+    @Id
+    @GeneratedValue
+    Long id;
     private String name;
+
     private Gender gender;
     private int listingNumber;
 
-    public BabyName(String name, Gender gender, int listingNumber) {
+    public BabyName() { }
+
+    public BabyName(Long id, String name, Gender gender, int listingNumber) {
+        this.id = id;
         this.name = name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase(); //name always needs to start with a capital
         this.gender = gender;
         this.listingNumber = listingNumber;
     }
+
 
     public String getName() {
         return name;

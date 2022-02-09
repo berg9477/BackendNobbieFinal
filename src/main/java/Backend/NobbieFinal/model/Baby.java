@@ -1,16 +1,29 @@
 package Backend.NobbieFinal.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+@Entity
+@Table(name = "babies")
 public class Baby {
+    @Id
+    @GeneratedValue
+    Long id;
+
     private String nickname;
     private Gender gender;
     private LocalDate birthdate;
     private Boolean expected;
     private int weeksLeft;
+    private Long userId;
 
-    public Baby (String name, Gender gen, LocalDate date, Boolean expected){
+    public Baby (){}
+
+    public Baby (String name, Gender gen, LocalDate date, Boolean expected, Long userId){
         this.nickname = name;
         this.gender = gen;
         this.expected = expected;
@@ -27,6 +40,7 @@ public class Baby {
         } else { //if expected is false weeksLeft is always 0
             this.weeksLeft = 0;
         }
+        this.userId = userId;
     }
 
     public String getNickname() {
@@ -68,6 +82,10 @@ public class Baby {
 
     public int getWeeksLeft(){
         return this.weeksLeft;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }
 

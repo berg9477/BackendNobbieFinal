@@ -1,19 +1,29 @@
 package Backend.NobbieFinal.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+
+@Entity
+@Table(name = "users")
 public class UserProfile {
+    @Id
+    @GeneratedValue
+    Long userId;
+
     private String firstname;
     private String lastname;
     private String emailaddress;
     private String password;
-    private String userId;
-    private List<SocialMediaAccount> socialMediaAccounts = new ArrayList<SocialMediaAccount>();
-    private List<BabyName> savedNamesList = new ArrayList<BabyName>();
-    private List<Baby> kids = new ArrayList<Baby>();
+//    private List<SocialMediaAccount> socialMediaAccounts = new ArrayList<SocialMediaAccount>();
+//    private List<BabyName> savedNamesList = new ArrayList<BabyName>();
+//    private List<Baby> kids = new ArrayList<Baby>();
 
-    public UserProfile(String first, String last, String email, String password, String userId){
+    public UserProfile(){ }
+
+    public UserProfile(String first, String last, String email, String password, Long userId){
         this.firstname = first;
         this.lastname = last;
         this.emailaddress = email;
@@ -53,51 +63,51 @@ public class UserProfile {
         this.password = password;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    //methods for socialMediaAccounts list
-    public List<SocialMediaAccount> getSocialMediaAccounts() {
-        return socialMediaAccounts;
-    }
-
-    public void setSocialMediaAccounts(List<SocialMediaAccount> socialMediaAccounts) {
-        this.socialMediaAccounts = socialMediaAccounts;
-    }
-
-    public void addSocialMediaAccount(SocialMediaAccount sma){
-        socialMediaAccounts.add(sma);
-    }
-
-    //methods for savedNamesList
-    public List<BabyName> getSavedNamesList() {
-        return savedNamesList;
-    }
-
-    public void setSavedNamesList(List<BabyName> savedNamesList) {
-        this.savedNamesList = savedNamesList;
-    }
-
-    public void addName(BabyName name){
-        savedNamesList.add(name);
-    }
-
-    //methods for kids list
-    public List<Baby> getKids() {
-        return kids;
-    }
-
-    public void setKids(List<Baby> kids) {
-        this.kids = kids;
-    }
-
-    public void addKid(Baby baby){
-        kids.add(baby);
-    }
+//    //methods for socialMediaAccounts list
+//    public List<SocialMediaAccount> getSocialMediaAccounts() {
+//        return socialMediaAccounts;
+//    }
+//
+//    public void setSocialMediaAccounts(List<SocialMediaAccount> socialMediaAccounts) {
+//        this.socialMediaAccounts = socialMediaAccounts;
+//    }
+//
+//    public void addSocialMediaAccount(SocialMediaAccount sma){
+//        socialMediaAccounts.add(sma);
+//    }
+//
+//    //methods for savedNamesList
+//    public List<BabyName> getSavedNamesList() {
+//        return savedNamesList;
+//    }
+//
+//    public void setSavedNamesList(List<BabyName> savedNamesList) {
+//        this.savedNamesList = savedNamesList;
+//    }
+//
+//    public void addName(BabyName name){
+//        savedNamesList.add(name);
+//    }
+//
+//    //methods for kids list
+//    public List<Baby> getKids() {
+//        return kids;
+//    }
+//
+//    public void setKids(List<Baby> kids) {
+//        this.kids = kids;
+//    }
+//
+//    public void addKid(Baby baby){
+//        kids.add(baby);
+//    }
 
 }

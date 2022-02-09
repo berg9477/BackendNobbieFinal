@@ -1,20 +1,31 @@
 package Backend.NobbieFinal.model;
 
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "SocialMediaAccount")
 public class SocialMediaAccount {
-    private String userName;
+
+    @Id
+    @GeneratedValue
+    Long id;
+
+    private Long userId;
     private MediaType socialMediaType;
 
-    public SocialMediaAccount(String userName, MediaType socialMediaType){
-        this.userName = userName;
+    public SocialMediaAccount() { }
+
+    public SocialMediaAccount(Long userId, MediaType socialMediaType){
+        this.userId = userId;
         this.socialMediaType = socialMediaType;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public MediaType getSocialMediaType() {
