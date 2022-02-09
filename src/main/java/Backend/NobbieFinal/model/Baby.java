@@ -1,9 +1,13 @@
 package Backend.NobbieFinal.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -14,11 +18,19 @@ public class Baby {
     @GeneratedValue
     Long id;
 
+    @NotBlank
     private String nickname;
+
     private Gender gender;
+
     private LocalDate birthdate;
+
     private Boolean expected;
+
+    @NumberFormat
     private int weeksLeft;
+
+    @NumberFormat
     private Long userId;
 
     public Baby (){}
@@ -87,5 +99,13 @@ public class Baby {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 }
 
