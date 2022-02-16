@@ -1,8 +1,10 @@
 package Backend.NobbieFinal.controller;
 
 
+import Backend.NobbieFinal.dto.UserProfileDto;
 import Backend.NobbieFinal.model.UserProfile;
 import Backend.NobbieFinal.repository.UserProfileRepository;
+import Backend.NobbieFinal.service.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +17,11 @@ import java.util.List;
 @RestController
 public class UserProfileController {
     @Autowired
-    UserProfileRepository repos;
+    UserProfileService service;
 
     @GetMapping("/users")
     public ResponseEntity<Object> getAllUsers() {
-        List<UserProfile> up = repos.findAll();
+        List<UserProfileDto> up = service.getAllUsers();
         return new ResponseEntity<>(up, HttpStatus.OK);
     }
 }

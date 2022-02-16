@@ -1,7 +1,9 @@
 package Backend.NobbieFinal.controller;
 
+import Backend.NobbieFinal.dto.BabyNameDto;
 import Backend.NobbieFinal.model.BabyName;
 import Backend.NobbieFinal.repository.BabyNameRepository;
+import Backend.NobbieFinal.service.BabyNameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +15,11 @@ import java.util.List;
 @RestController
 public class BabyNameController {
     @Autowired
-    BabyNameRepository repos;
+    BabyNameService service;
 
     @GetMapping("/babynames")
     public ResponseEntity<Object> getAllNames() {
-        List<BabyName> bn = repos.findAll();
+        List<BabyNameDto> bn = service.getAllNames();
         return new ResponseEntity<>(bn, HttpStatus.OK);
     }
 }

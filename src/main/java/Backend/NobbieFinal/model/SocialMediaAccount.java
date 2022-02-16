@@ -13,7 +13,6 @@ public class SocialMediaAccount {
     @Id
     @GeneratedValue
     Long id;
-
     private Long userId;
     private MediaType socialMediaType;
 
@@ -30,6 +29,14 @@ public class SocialMediaAccount {
 
     public MediaType getSocialMediaType() {
         return socialMediaType;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getUserId() {
+        return userId;
     }
 
     public void setSocialMediaType(MediaType socialMediaType) {

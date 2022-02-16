@@ -13,7 +13,6 @@ public class BabyName {
     @GeneratedValue
     Long id;
     private String name;
-
     private Gender gender;
     private int listingNumber;
 
@@ -26,6 +25,13 @@ public class BabyName {
         this.listingNumber = listingNumber;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

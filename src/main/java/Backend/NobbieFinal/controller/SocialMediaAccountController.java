@@ -1,8 +1,10 @@
 package Backend.NobbieFinal.controller;
 
 
+import Backend.NobbieFinal.dto.SocialMediaAccountDto;
 import Backend.NobbieFinal.model.SocialMediaAccount;
 import Backend.NobbieFinal.repository.SocialMediaAccountRepository;
+import Backend.NobbieFinal.service.SocialMediaAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +16,11 @@ import java.util.List;
 @RestController
 public class SocialMediaAccountController {
     @Autowired
-    SocialMediaAccountRepository repos;
+    SocialMediaAccountService service;
 
     @GetMapping("/socialMediaAccounts")
-    public ResponseEntity<Object> getAllNames() {
-        List<SocialMediaAccount> sma = repos.findAll();
+    public ResponseEntity<Object> getAllAccounts() {
+        List<SocialMediaAccountDto> sma = service.getAllAccounts();
         return new ResponseEntity<>(sma, HttpStatus.OK);
     }
 }
