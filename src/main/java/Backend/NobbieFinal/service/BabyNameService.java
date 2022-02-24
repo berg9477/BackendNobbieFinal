@@ -8,6 +8,6 @@ import java.util.List;
 public interface BabyNameService {
     public List<BabyNameDto> getAllNames();
     public List<BabyNameDto> getNameStartsWith(Character ch);
-    List<BabyNameDto> getNamesContaining(String input);
+    public List<BabyNameDto> getNamesContaining(String input);
     public BabyName insertBabyName(BabyNameDto babyNameDto);
 }
