@@ -2,8 +2,6 @@ package Backend.NobbieFinal.controller;
 
 
 import Backend.NobbieFinal.dto.UserProfileDto;
-import Backend.NobbieFinal.model.UserProfile;
-import Backend.NobbieFinal.repository.UserProfileRepository;
 import Backend.NobbieFinal.service.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

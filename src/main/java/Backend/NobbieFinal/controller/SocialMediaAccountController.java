@@ -2,8 +2,6 @@ package Backend.NobbieFinal.controller;
 
 
 import Backend.NobbieFinal.dto.SocialMediaAccountDto;
-import Backend.NobbieFinal.model.SocialMediaAccount;
-import Backend.NobbieFinal.repository.SocialMediaAccountRepository;
 import Backend.NobbieFinal.service.SocialMediaAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

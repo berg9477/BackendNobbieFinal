@@ -1,8 +1,6 @@
 package Backend.NobbieFinal.controller;
 
 import Backend.NobbieFinal.dto.BabyDto;
-import Backend.NobbieFinal.model.Baby;
-import Backend.NobbieFinal.repository.BabyRepository;
 import Backend.NobbieFinal.service.BabyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
