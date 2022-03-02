@@ -1,10 +1,9 @@
 package Backend.NobbieFinal.model;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.apache.catalina.User;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "SocialMediaAccount")
@@ -13,18 +12,18 @@ public class SocialMediaAccount {
     @Id
     @GeneratedValue
     Long id;
-    private Long userId;
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private UserProfile user;
+
     private MediaType socialMediaType;
 
     public SocialMediaAccount() { }
 
-    public SocialMediaAccount(Long userId, MediaType socialMediaType){
-        this.userId = userId;
+    public SocialMediaAccount(UserProfile user, MediaType socialMediaType){
+        this.user = user;
         this.socialMediaType = socialMediaType;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public MediaType getSocialMediaType() {
@@ -35,8 +34,12 @@ public class SocialMediaAccount {
         return id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public UserProfile getUser() {
+        return user;
+    }
+
+    public void setUser(UserProfile user) {
+        this.user = user;
     }
 
     public void setSocialMediaType(MediaType socialMediaType) {

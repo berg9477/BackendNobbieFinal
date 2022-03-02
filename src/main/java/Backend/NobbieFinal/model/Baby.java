@@ -1,10 +1,7 @@
 package Backend.NobbieFinal.model;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -26,6 +23,10 @@ public class Baby {
     private int weeksLeft;
 
     private Long userId;
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    UserProfile user;
 
     public Baby (){}
 
@@ -108,6 +109,16 @@ public class Baby {
     public void setId(Long id) {
         this.id = id;
     }
+
+
+    public UserProfile getUser() {
+        return user;
+    }
+
+    public void setUser(UserProfile user) {
+        this.user = user;
+    }
+
 
 }
 

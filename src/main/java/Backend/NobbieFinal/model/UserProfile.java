@@ -1,9 +1,7 @@
 package Backend.NobbieFinal.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -17,9 +15,14 @@ public class UserProfile {
     private String lastname;
     private String emailaddress;
     private String password;
-//    private List<SocialMediaAccount> socialMediaAccounts = new ArrayList<SocialMediaAccount>();
-//    private List<BabyName> savedNamesList = new ArrayList<BabyName>();
-//    private List<Baby> kids = new ArrayList<Baby>();
+
+    @OneToMany(mappedBy = "user")
+    List<Baby> babies;
+
+    @OneToMany(mappedBy = "user")
+    List<SocialMediaAccount> socialMediaAccounts;
+
+//  private List<BabyName> savedNamesList = new ArrayList<BabyName>();
 
     public UserProfile(){ }
 
@@ -71,43 +74,20 @@ public class UserProfile {
         this.userId = userId;
     }
 
-//    //methods for socialMediaAccounts list
-//    public List<SocialMediaAccount> getSocialMediaAccounts() {
-//        return socialMediaAccounts;
-//    }
-//
-//    public void setSocialMediaAccounts(List<SocialMediaAccount> socialMediaAccounts) {
-//        this.socialMediaAccounts = socialMediaAccounts;
-//    }
-//
-//    public void addSocialMediaAccount(SocialMediaAccount sma){
-//        socialMediaAccounts.add(sma);
-//    }
-//
-//    //methods for savedNamesList
-//    public List<BabyName> getSavedNamesList() {
-//        return savedNamesList;
-//    }
-//
-//    public void setSavedNamesList(List<BabyName> savedNamesList) {
-//        this.savedNamesList = savedNamesList;
-//    }
-//
-//    public void addName(BabyName name){
-//        savedNamesList.add(name);
-//    }
-//
-//    //methods for kids list
-//    public List<Baby> getKids() {
-//        return kids;
-//    }
-//
-//    public void setKids(List<Baby> kids) {
-//        this.kids = kids;
-//    }
-//
-//    public void addKid(Baby baby){
-//        kids.add(baby);
-//    }
+    public List<Baby> getBabies() {
+        return babies;
+    }
+
+    public void setBabies(List<Baby> babies) {
+        this.babies = babies;
+    }
+
+    public List<SocialMediaAccount> getSocialMediaAccounts() {
+        return socialMediaAccounts;
+    }
+
+    public void setSocialMediaAccounts(List<SocialMediaAccount> socialMediaAccounts) {
+        this.socialMediaAccounts = socialMediaAccounts;
+    }
 
 }
