@@ -33,7 +33,7 @@ public class BabyServiceImpl implements BabyService{
         b.setBirthdate(babyDto.getBirthdate());
         b.setGender(babyDto.getGender());
         b.setExpected(babyDto.getExpected(), babyDto.getBirthdate());
-        b.setUserId(babyDto.getUserId());
+        b.setUserId(babyDto.getUser());
         b.setWeeksLeft(babyDto.getWeeksLeft());
         return this.repos.save(b);
     }

@@ -21,7 +21,7 @@ public class SocialMediaAccountServiceImpl implements SocialMediaAccountService 
     public List<SocialMediaAccountDto> getAllAccounts() {
         List<SocialMediaAccount> sma = this.repos.findAll();
         List<SocialMediaAccountDto> smos = new ArrayList<>();
-        sma.forEach(s -> smos.add(new SocialMediaAccountDto(s.getId(), s.getUserId(), s.getSocialMediaType())));
+        sma.forEach(s -> smos.add(new SocialMediaAccountDto(s.getId(), s.getUser(), s.getSocialMediaType())));
         return smos;
     }
 

@@ -1,7 +1,12 @@
 package Backend.NobbieFinal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -22,7 +27,13 @@ public class UserProfile {
     @OneToMany(mappedBy = "user")
     List<SocialMediaAccount> socialMediaAccounts;
 
-//  private List<BabyName> savedNamesList = new ArrayList<BabyName>();
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "User_babynames",
+            joinColumns = { @JoinColumn(name = "userId") },
+            inverseJoinColumns = { @JoinColumn(name = "babyName") }
+    )
+    Set<BabyName> savedNamesList = new HashSet<>();
 
     public UserProfile(){ }
 
@@ -88,6 +99,14 @@ public class UserProfile {
 
     public void setSocialMediaAccounts(List<SocialMediaAccount> socialMediaAccounts) {
         this.socialMediaAccounts = socialMediaAccounts;
+    }
+
+    public Set<BabyName> getSavedNamesList() {
+        return savedNamesList;
+    }
+
+    public void setSavedNamesList(Set<BabyName> savedNamesList) {
+        this.savedNamesList = savedNamesList;
     }
 
 }

@@ -1,6 +1,9 @@
 package Backend.NobbieFinal.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.catalina.User;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -8,6 +11,7 @@ import java.time.temporal.ChronoUnit;
 @Entity
 @Table(name = "babies")
 public class Baby {
+
     @Id
     @GeneratedValue
     Long id;
@@ -22,15 +26,14 @@ public class Baby {
 
     private int weeksLeft;
 
-    private Long userId;
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "userId")
     UserProfile user;
 
     public Baby (){}
 
-    public Baby (String name, Gender gen, LocalDate date, Boolean expected, Long userId){
+    public Baby (String name, Gender gen, LocalDate date, Boolean expected, UserProfile user){
         this.nickname = name;
         this.gender = gen;
         this.expected = expected;
@@ -47,8 +50,10 @@ public class Baby {
         } else { //if expected is false weeksLeft is always 0
             this.weeksLeft = 0;
         }
-        this.userId = userId;
+        this.user = user;
     }
+
+    public Long getId() {return id; }
 
     public String getNickname() {
         return nickname;
@@ -95,15 +100,12 @@ public class Baby {
         this.weeksLeft = weeksLeft;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-    public Long getId() {
-        return id;
+    public void setUserId(UserProfile user) {
+        this.user = user;
     }
 
-    public Long getUserId() {
-        return userId;
+    public UserProfile getUserId() {
+        return this.user;
     }
 
     public void setId(Long id) {

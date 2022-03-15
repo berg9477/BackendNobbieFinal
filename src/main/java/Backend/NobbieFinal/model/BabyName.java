@@ -1,9 +1,10 @@
 package Backend.NobbieFinal.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "babyNames")
@@ -15,6 +16,10 @@ public class BabyName {
     private String name;
     private Gender gender;
     private int listingNumber;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "savedNamesList")
+    private Set<UserProfile> users = new HashSet<>();
 
     public BabyName() { }
 
@@ -55,5 +60,13 @@ public class BabyName {
 
     public void setListingNumber(int listingNumber) {
         this.listingNumber = listingNumber;
+    }
+
+    public Set<UserProfile> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<UserProfile> users) {
+        this.users = users;
     }
 }

@@ -1,6 +1,7 @@
 package Backend.NobbieFinal.dto;
 
 import Backend.NobbieFinal.model.Gender;
+import Backend.NobbieFinal.model.UserProfile;
 import lombok.Data;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -24,5 +25,5 @@ public class BabyDto {
     private final int weeksLeft;
 
     @NumberFormat
-    private final Long userId;
+    private final UserProfile user;
 }
