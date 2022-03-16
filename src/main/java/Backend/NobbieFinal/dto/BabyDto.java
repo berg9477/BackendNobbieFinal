@@ -15,6 +15,7 @@ public class BabyDto {
     @NotBlank
     private final String nickname;
 
+    @NotBlank
     private final Gender gender;
 
     private final LocalDate birthdate;

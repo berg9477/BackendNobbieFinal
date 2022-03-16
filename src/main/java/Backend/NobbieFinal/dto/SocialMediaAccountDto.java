@@ -7,6 +7,9 @@ import lombok.Data;
 @Data
 public class SocialMediaAccountDto {
     private final Long id;
-    private final UserProfile userId;
+
+    private final UserProfile user;
+
     private final MediaType socialMediaType;
+
 }

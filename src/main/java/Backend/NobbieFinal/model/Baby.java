@@ -24,13 +24,13 @@ public class Baby {
 
     private int weeksLeft;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "userId")
     UserProfile user;
 
     public Baby (){}
 
-    public Baby (String name, Gender gen, LocalDate date, Boolean expected){
+    public Baby (String name, Gender gen, LocalDate date, Boolean expected, UserProfile user){
         this.nickname = name;
         this.gender = gen;
         this.expected = expected;
@@ -47,6 +47,7 @@ public class Baby {
         } else { //if expected is false weeksLeft is always 0
             this.weeksLeft = 0;
         }
+        this.user = user;
     }
 
     public Long getId() {return id; }

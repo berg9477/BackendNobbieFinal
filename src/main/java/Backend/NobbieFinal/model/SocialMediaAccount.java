@@ -1,6 +1,7 @@
 package Backend.NobbieFinal.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.catalina.User;
 
 import javax.persistence.*;
 
@@ -12,9 +13,9 @@ public class SocialMediaAccount {
     @GeneratedValue
     Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "userId")
-    private UserProfile user;
+    UserProfile user;
 
     private MediaType socialMediaType;
 
@@ -30,15 +31,17 @@ public class SocialMediaAccount {
     }
 
     public Long getId() {
-        return id;
+        return this.id;
     }
+
+    public void setId(Long id) {this.id = id;}
 
     @JsonIgnore
-    public UserProfile getUser() {
-        return user;
+    public UserProfile getUserId() {
+        return this.user;
     }
 
-    public void setUser(UserProfile user) {
+    public void setUserId(UserProfile user) {
         this.user = user;
     }
 
