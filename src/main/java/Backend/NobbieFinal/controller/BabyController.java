@@ -24,6 +24,13 @@ public class BabyController {
         return new ResponseEntity<>(babies, HttpStatus.OK);
     }
 
+    @GetMapping("/babiesForUser")
+    public ResponseEntity<Object> getBabiesById(@RequestParam(required = true)Long id) {
+        List<BabyDto> babies = service.getBabiesById(id);
+        return new ResponseEntity<>(babies, HttpStatus.OK);
+    }
+
+
     @PostMapping("/babies")
     public ResponseEntity<Object> createBaby(@Valid @RequestBody BabyDto bdto, BindingResult br) {
         if(br.hasErrors()){

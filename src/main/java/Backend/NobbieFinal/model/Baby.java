@@ -26,6 +26,7 @@ public class Baby {
 
     @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "userId")
+    @JsonIgnore
     UserProfile user;
 
     public Baby (){}

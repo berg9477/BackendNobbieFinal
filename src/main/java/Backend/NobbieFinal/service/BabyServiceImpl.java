@@ -3,6 +3,7 @@ package Backend.NobbieFinal.service;
 import Backend.NobbieFinal.dto.BabyDto;
 import Backend.NobbieFinal.model.Baby;
 import Backend.NobbieFinal.repository.BabyRepository;
+import Backend.NobbieFinal.repository.UserProfileRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,9 +13,12 @@ import java.util.List;
 public class BabyServiceImpl implements BabyService{
 
     private final BabyRepository repos;
+    private final UserProfileRepository userRepos;
 
-    public BabyServiceImpl(BabyRepository repos){
+
+    public BabyServiceImpl(BabyRepository repos, UserProfileRepository userRepos){
         this.repos = repos;
+        this.userRepos = userRepos;
     }
 
     @Override
@@ -36,5 +40,13 @@ public class BabyServiceImpl implements BabyService{
         b.setWeeksLeft(b.getWeeksLeft(babyDto.getBirthdate()));
         b.setUserId(babyDto.getUser());
         return this.repos.save(b);
+    }
+
+    @Override
+    public List<BabyDto> getBabiesById(Long id) {
+                List<Baby> bl = this.repos.findByUser(this.userRepos.findById(id).get());
+        List<BabyDto> babies = new ArrayList<>();
+        bl.forEach(b -> babies.add(new BabyDto(b.getId(), b.getNickname(), b.getGender(), b.getBirthdate(), b.getExpected(), b.getUserId())));
+        return babies;
     }
 }
