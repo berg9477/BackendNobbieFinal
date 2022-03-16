@@ -89,12 +89,19 @@ public class Baby {
         this.expected = expected;
     }
 
-    public int getWeeksLeft(){
-        return this.weeksLeft;
-    }
+    public void setWeeksLeft(int weeksLeft) { this.weeksLeft = weeksLeft; }
 
-    public void setWeeksLeft(int weeksLeft) {
-        this.weeksLeft = weeksLeft;
+    public int getWeeksLeft(LocalDate date) {
+        LocalDate today = LocalDate.now();
+        if(today.isAfter(date.plusMonths(1))) {
+            System.out.println("expected set false because person cant be overdue more then 2 months");
+            this.expected = false;
+            return 0;
+        }
+        else{
+            Number weeks = Math.abs(ChronoUnit.WEEKS.between(date, today));
+            return weeks.intValue();
+        }
     }
 
     public void setUserId(UserProfile user) {

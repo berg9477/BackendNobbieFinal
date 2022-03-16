@@ -23,12 +23,6 @@ public class UserProfile {
     @OneToMany(mappedBy = "user")
     List<SocialMediaAccount> socialMediaAccounts;
 
-//    @ManyToMany(cascade = { CascadeType.ALL })
-//    @JoinTable(
-//            name = "User_babynames",
-//            joinColumns = { @JoinColumn(name = "userId") },
-//            inverseJoinColumns = { @JoinColumn(name = "babyName") }
-//    )
     @ManyToMany
     List<BabyName> savedNamesList = new ArrayList<>();
 

@@ -21,7 +21,7 @@ public class BabyServiceImpl implements BabyService{
     public List<BabyDto> getAllBabies() {
         List<Baby> bl = this.repos.findAll();
         List<BabyDto> babies = new ArrayList<>();
-        bl.forEach(b -> babies.add(new BabyDto(b.getId(), b.getNickname(), b.getGender(), b.getBirthdate(), b.getExpected(), b.getWeeksLeft(), b.getUserId())));
+        bl.forEach(b -> babies.add(new BabyDto(b.getId(), b.getNickname(), b.getGender(), b.getBirthdate(), b.getExpected(), b.getUserId())));
         return babies;
     }
 
@@ -33,8 +33,8 @@ public class BabyServiceImpl implements BabyService{
         b.setBirthdate(babyDto.getBirthdate());
         b.setGender(babyDto.getGender());
         b.setExpected(babyDto.getExpected(), babyDto.getBirthdate());
+        b.setWeeksLeft(b.getWeeksLeft(babyDto.getBirthdate()));
         b.setUserId(babyDto.getUser());
-        b.setWeeksLeft(babyDto.getWeeksLeft());
         return this.repos.save(b);
     }
 }
