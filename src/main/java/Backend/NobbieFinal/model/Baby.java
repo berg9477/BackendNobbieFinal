@@ -1,8 +1,6 @@
 package Backend.NobbieFinal.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.apache.catalina.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -26,14 +24,13 @@ public class Baby {
 
     private int weeksLeft;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "userId")
     UserProfile user;
 
     public Baby (){}
 
-    public Baby (String name, Gender gen, LocalDate date, Boolean expected, UserProfile user){
+    public Baby (String name, Gender gen, LocalDate date, Boolean expected){
         this.nickname = name;
         this.gender = gen;
         this.expected = expected;
@@ -50,7 +47,6 @@ public class Baby {
         } else { //if expected is false weeksLeft is always 0
             this.weeksLeft = 0;
         }
-        this.user = user;
     }
 
     public Long getId() {return id; }
@@ -104,6 +100,7 @@ public class Baby {
         this.user = user;
     }
 
+    @JsonIgnore
     public UserProfile getUserId() {
         return this.user;
     }
@@ -112,7 +109,7 @@ public class Baby {
         this.id = id;
     }
 
-
+    @JsonIgnore
     public UserProfile getUser() {
         return user;
     }

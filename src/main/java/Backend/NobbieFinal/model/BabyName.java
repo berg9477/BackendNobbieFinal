@@ -1,10 +1,9 @@
 package Backend.NobbieFinal.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "babyNames")
@@ -17,9 +16,9 @@ public class BabyName {
     private Gender gender;
     private int listingNumber;
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "savedNamesList")
-    private Set<UserProfile> users = new HashSet<>();
+    @JsonIgnore
+    List<UserProfile> users = new ArrayList<>();
 
     public BabyName() { }
 
@@ -62,11 +61,11 @@ public class BabyName {
         this.listingNumber = listingNumber;
     }
 
-    public Set<UserProfile> getUsers() {
+    public List<UserProfile> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<UserProfile> users) {
+    public void setUsers(List<UserProfile> users) {
         this.users = users;
     }
 }

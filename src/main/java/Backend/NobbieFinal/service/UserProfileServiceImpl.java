@@ -1,7 +1,6 @@
 package Backend.NobbieFinal.service;
 
 import Backend.NobbieFinal.dto.UserProfileDto;
-import Backend.NobbieFinal.model.BabyName;
 import Backend.NobbieFinal.model.UserProfile;
 import Backend.NobbieFinal.repository.UserProfileRepository;
 import org.springframework.stereotype.Service;
@@ -27,6 +26,11 @@ public class UserProfileServiceImpl implements UserProfileService{
     }
 
     @Override
+    public UserProfile getUser(Long id) {
+        return this.repos.findById(id).get();
+    }
+
+    @Override
     public UserProfile createNewUser(UserProfileDto userProfileDto) {
         UserProfile user = new UserProfile();
         user.setUserId(userProfileDto.getUserId());
@@ -35,5 +39,9 @@ public class UserProfileServiceImpl implements UserProfileService{
         user.setEmailaddress(userProfileDto.getEmailaddress());
         user.setPassword(userProfileDto.getPassword());
         return this.repos.save(user);
+    }
+    @Override
+    public void updateUser(UserProfile u) {
+        repos.save(u);
     }
 }

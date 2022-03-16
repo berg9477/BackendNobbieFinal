@@ -1,12 +1,8 @@
 package Backend.NobbieFinal.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @Entity
@@ -27,13 +23,14 @@ public class UserProfile {
     @OneToMany(mappedBy = "user")
     List<SocialMediaAccount> socialMediaAccounts;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-            name = "User_babynames",
-            joinColumns = { @JoinColumn(name = "userId") },
-            inverseJoinColumns = { @JoinColumn(name = "babyName") }
-    )
-    Set<BabyName> savedNamesList = new HashSet<>();
+//    @ManyToMany(cascade = { CascadeType.ALL })
+//    @JoinTable(
+//            name = "User_babynames",
+//            joinColumns = { @JoinColumn(name = "userId") },
+//            inverseJoinColumns = { @JoinColumn(name = "babyName") }
+//    )
+    @ManyToMany
+    List<BabyName> savedNamesList = new ArrayList<>();
 
     public UserProfile(){ }
 
@@ -101,12 +98,15 @@ public class UserProfile {
         this.socialMediaAccounts = socialMediaAccounts;
     }
 
-    public Set<BabyName> getSavedNamesList() {
+    public List<BabyName> getSavedNamesList() {
         return savedNamesList;
     }
 
-    public void setSavedNamesList(Set<BabyName> savedNamesList) {
+    public void setSavedNamesList(List<BabyName> savedNamesList) {
         this.savedNamesList = savedNamesList;
+    }
+    public void addBabyNameToList(BabyName name) {
+        savedNamesList.add(name);
     }
 
 }
