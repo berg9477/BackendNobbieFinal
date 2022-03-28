@@ -1,5 +1,6 @@
 package Backend.NobbieFinal.dto;
 
+import Backend.NobbieFinal.model.ProfileType;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -18,4 +19,6 @@ public class UserProfileDto {
     @NotBlank
     @Size(min=6, max=10)
     private final String password;
+    @NotBlank
+    private final ProfileType profileType;
 }

@@ -26,14 +26,17 @@ public class UserProfile {
     @ManyToMany
     List<BabyName> savedNamesList = new ArrayList<>();
 
+    private ProfileType profileType;
+
     public UserProfile(){ }
 
-    public UserProfile(String first, String last, String email, String password, Long userId){
+    public UserProfile(String first, String last, String email, String password, Long userId, ProfileType profileType){
         this.firstname = first;
         this.lastname = last;
         this.emailaddress = email;
         this.password = password;
         this.userId = userId;
+        this.profileType = profileType;
     }
 
     public String getFirstname() {
@@ -103,4 +106,11 @@ public class UserProfile {
         savedNamesList.add(name);
     }
 
+    public ProfileType getProfileType() {
+        return profileType;
+    }
+
+    public void setProfileType(ProfileType profileType) {
+        this.profileType = profileType;
+    }
 }
