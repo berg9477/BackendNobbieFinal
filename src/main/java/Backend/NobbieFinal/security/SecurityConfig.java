@@ -1,23 +1,28 @@
 package Backend.NobbieFinal.security;
 
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import javax.sql.DataSource;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private DataSource dataSource;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .inMemoryAuthentication()
-                .withUser("papa").password("$2a$12$Tstm.8p3I8tRC9bG2UX5IOjN/tURCGxg6PVek0ysT5WHkj.miaGCa").roles("USER")
-                .and()
-                .withUser("mama").password("$2a$12$Tstm.8p3I8tRC9bG2UX5IOjN/tURCGxg6PVek0ysT5WHkj.miaGCa").roles("ADMIN");
-
+                .jdbcAuthentication()
+                .passwordEncoder(new BCryptPasswordEncoder())
+                .dataSource(dataSource)
+                .usersByUsernameQuery("select username, password, enabled from users where username=?")
+                .authoritiesByUsernameQuery("select username, role from users where username=?");
     }
 
     @Override
@@ -26,14 +31,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/babynames").hasRole("ADMIN")
-                .antMatchers("/users").hasRole("ADMIN")
-                .antMatchers("/**").hasAnyRole("ADMIN", "USER");
-
+                .antMatchers("/babynames").hasAuthority("0") //ONLY for POST
+//                .antMatchers("/users").hasAuthority("0")
+//                .antMatchers("/user").hasAuthority("0")
+//                .antMatchers("/socialMediaAccounts").hasAuthority("0") //ONLY for POST
+//                .antMatchers("/babies").hasAuthority("0") //only for POST
+                .antMatchers("/**").hasAnyAuthority("0", "1")
+                .anyRequest()
+                .authenticated()
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) ;
     }
 
-    @Bean
-    public PasswordEncoder encoder(){
-        return new BCryptPasswordEncoder();
-    }
+
 }

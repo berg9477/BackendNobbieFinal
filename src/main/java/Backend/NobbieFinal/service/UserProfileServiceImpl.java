@@ -21,7 +21,7 @@ public class UserProfileServiceImpl implements UserProfileService{
     public List<UserProfileDto> getAllUsers() {
         List<UserProfile> up =this.repos.findAll();
         List<UserProfileDto> users = new ArrayList<>();
-        up.forEach(u -> users.add(new UserProfileDto(u.getUserId(), u.getFirstname(), u.getLastname(), u.getEmailaddress(), u.getPassword(), u.getProfileType())));
+        up.forEach(u -> users.add(new UserProfileDto(u.getUserId(), u.getUsername(), u.getFirstname(), u.getLastname(), u.getEmailaddress(), u.getPassword(), u.getRole(), u.getEnabled())));
         return users;
     }
 
@@ -34,11 +34,13 @@ public class UserProfileServiceImpl implements UserProfileService{
     public UserProfile createNewUser(UserProfileDto userProfileDto) {
         UserProfile user = new UserProfile();
         user.setUserId(userProfileDto.getUserId());
+        user.setUsername(userProfileDto.getUsername());
         user.setFirstname(userProfileDto.getFirstname());
         user.setLastname(userProfileDto.getLastname());
         user.setEmailaddress(userProfileDto.getEmailaddress());
         user.setPassword(userProfileDto.getPassword());
-        user.setProfileType(userProfileDto.getProfileType());
+        user.setRole(userProfileDto.getRole());
+        user.setEnabled(userProfileDto.getEnabled());
         return this.repos.save(user);
     }
     @Override

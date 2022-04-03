@@ -12,6 +12,7 @@ public class UserProfile {
     @GeneratedValue
     Long userId;
 
+    private String username;
     private String firstname;
     private String lastname;
     private String emailaddress;
@@ -26,17 +27,29 @@ public class UserProfile {
     @ManyToMany
     List<BabyName> savedNamesList = new ArrayList<>();
 
-    private ProfileType profileType;
+    private Role role;
+
+    private int enabled;
 
     public UserProfile(){ }
 
-    public UserProfile(String first, String last, String email, String password, Long userId, ProfileType profileType){
+    public UserProfile(String username, String first, String last, String email, String password, Long userId, Role role, int enabled){
+        this.username = username;
         this.firstname = first;
         this.lastname = last;
         this.emailaddress = email;
         this.password = password;
         this.userId = userId;
-        this.profileType = profileType;
+        this.role = role;
+        this.enabled = enabled;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstname() {
@@ -106,11 +119,19 @@ public class UserProfile {
         savedNamesList.add(name);
     }
 
-    public ProfileType getProfileType() {
-        return profileType;
+    public Role getRole() {
+        return role;
     }
 
-    public void setProfileType(ProfileType profileType) {
-        this.profileType = profileType;
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public int getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
     }
 }

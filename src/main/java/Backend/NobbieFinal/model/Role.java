@@ -1,6 +1,6 @@
 package Backend.NobbieFinal.model;
 
-public enum ProfileType {
+public enum Role {
     ADMIN,
     USER,
     SuperUser
