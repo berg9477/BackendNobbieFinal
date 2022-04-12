@@ -21,8 +21,8 @@ public class SocialMediaAccount {
 
     public SocialMediaAccount() { }
 
-    public SocialMediaAccount(UserProfile user, MediaType socialMediaType){
-        this.user = user;
+    public SocialMediaAccount(UserProfile userProfile, MediaType socialMediaType){
+        this.user = userProfile;
         this.socialMediaType = socialMediaType;
     }
 
@@ -41,8 +41,8 @@ public class SocialMediaAccount {
         return this.user;
     }
 
-    public void setUserId(UserProfile user) {
-        this.user = user;
+    public void setUserId(UserProfile userProfile) {
+        this.user = userProfile;
     }
 
     public void setSocialMediaType(MediaType socialMediaType) {

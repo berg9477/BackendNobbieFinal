@@ -28,14 +28,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .httpBasic()
                 .and()
                 .authorizeRequests()
                 .antMatchers("/babynames").hasAuthority("0") //ONLY for POST
-//                .antMatchers("/users").hasAuthority("0")
-//                .antMatchers("/user").hasAuthority("0")
-//                .antMatchers("/socialMediaAccounts").hasAuthority("0") //ONLY for POST
-//                .antMatchers("/babies").hasAuthority("0") //only for POST
+                .antMatchers("/users").hasAuthority("0")
+                .antMatchers("/user").hasAuthority("0")
+                .antMatchers("/socialMediaAccounts").hasAuthority("0") //ONLY for POST
+                .antMatchers("/babies").hasAuthority("0") //only for POST
                 .antMatchers("/**").hasAnyAuthority("0", "1")
                 .anyRequest()
                 .authenticated()

@@ -5,8 +5,8 @@ import Backend.NobbieFinal.dto.UserProfileDto;
 import Backend.NobbieFinal.model.BabyName;
 import Backend.NobbieFinal.model.UserProfile;
 import Backend.NobbieFinal.repository.BabyNameRepository;
+import Backend.NobbieFinal.service.BabyNameService;
 import Backend.NobbieFinal.service.UserProfileService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,12 +19,16 @@ import java.util.List;
 
 @RestController
 public class UserProfileController {
-    @Autowired
-    UserProfileService service;
-    @Autowired
-    BabyNameRepository nameRepos;
 
-//All get mappings
+    private final UserProfileService service;
+    private final BabyNameService bnService;
+
+    public UserProfileController(UserProfileService service, BabyNameService bnService) {
+        this.service = service;
+        this.bnService = bnService;
+    }
+
+    //All get mappings
     @GetMapping("/users")
     public ResponseEntity<Object> getAllUsers() {
         List<UserProfileDto> up = service.getAllUsers();
@@ -37,7 +41,7 @@ public class UserProfileController {
         return new ResponseEntity<>(up, HttpStatus.OK);
     }
 
-//All post mappings
+    //All post mappings
     @PostMapping("/createUser")
     public ResponseEntity<Object> createNewUser(@Valid @RequestBody UserProfileDto updto, BindingResult br) {
         if(br.hasErrors()){
@@ -57,7 +61,8 @@ public class UserProfileController {
     public ResponseEntity<Object> saveBabyNameForUser(@PathVariable(name = "id") Long id, @RequestBody List<BabyName> babyNames) {
         UserProfile u = service.getUser(id);
         for (BabyName bn : babyNames) {
-            BabyName name = nameRepos.findById(bn.getId()).get();
+            BabyName name = (BabyName) bnService.findNameById(bn.getId());
+            u.addBabyNameToList(name);
             u.addBabyNameToList(name);
         }
         service.updateUser(u);

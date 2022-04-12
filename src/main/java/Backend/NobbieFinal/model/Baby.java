@@ -1,6 +1,7 @@
 package Backend.NobbieFinal.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -31,7 +32,7 @@ public class Baby {
 
     public Baby (){}
 
-    public Baby (String name, Gender gen, LocalDate date, Boolean expected, UserProfile user){
+    public Baby (String name, Gender gen, LocalDate date, Boolean expected, UserProfile userProfile){
         this.nickname = name;
         this.gender = gen;
         this.expected = expected;
@@ -48,7 +49,7 @@ public class Baby {
         } else { //if expected is false weeksLeft is always 0
             this.weeksLeft = 0;
         }
-        this.user = user;
+        this.user = userProfile;
     }
 
     public Long getId() {return id; }
@@ -105,15 +106,6 @@ public class Baby {
         }
     }
 
-    public void setUserId(UserProfile user) {
-        this.user = user;
-    }
-
-    @JsonIgnore
-    public UserProfile getUserId() {
-        return this.user;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -123,6 +115,7 @@ public class Baby {
         return user;
     }
 
+    @JsonProperty
     public void setUser(UserProfile user) {
         this.user = user;
     }

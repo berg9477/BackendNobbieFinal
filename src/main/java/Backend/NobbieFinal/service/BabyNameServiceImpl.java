@@ -7,16 +7,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BabyNameServiceImpl implements BabyNameService{
 
     private final BabyNameRepository repos;
 
-    public BabyNameServiceImpl(BabyNameRepository repos){
+    public BabyNameServiceImpl(BabyNameRepository repos) {
         this.repos = repos;
     }
-    
+
     @Override
     public List<BabyNameDto> getAllNames() {
         List<BabyName> bn = this.repos.findAll();
@@ -48,5 +49,10 @@ public class BabyNameServiceImpl implements BabyNameService{
         bn.setName(babyNameDto.getName());
         bn.setListingNumber(babyNameDto.getListingNumber());
         return this.repos.save(bn);
+    }
+
+    @Override
+    public BabyName findNameById(Long id) {
+        return this.repos.findById(id).get();
     }
 }
