@@ -4,6 +4,7 @@ import Backend.NobbieFinal.dto.UserProfileDto;
 import Backend.NobbieFinal.model.UserProfile;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserProfileService {
     public List<UserProfileDto> getAllUsers();

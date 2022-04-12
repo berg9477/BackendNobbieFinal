@@ -4,10 +4,12 @@ import Backend.NobbieFinal.dto.BabyNameDto;
 import Backend.NobbieFinal.model.BabyName;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BabyNameService {
     public List<BabyNameDto> getAllNames();
     public List<BabyNameDto> getNameStartsWith(Character ch);
     public List<BabyNameDto> getNamesContaining(String input);
     public BabyName insertBabyName(BabyNameDto babyNameDto);
+    public BabyName findNameById(Long id);
 }

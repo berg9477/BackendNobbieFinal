@@ -15,23 +15,24 @@ import java.util.List;
 @RestController
 public class BabyNameController {
     @Autowired
-    BabyNameService service;
+    BabyNameService bnService;
+
 //All get mappings
     @GetMapping("/babynames")
     public ResponseEntity<Object> getAllNames() {
-        List<BabyNameDto> bn = service.getAllNames();
+        List<BabyNameDto> bn = bnService.getAllNames();
         return new ResponseEntity<>(bn, HttpStatus.OK);
     }
 
     @GetMapping("/nameStartsWith")
     public ResponseEntity<Object> getNameStartsWith(@RequestParam(required = true) Character ch){
-        List<BabyNameDto> bn = service.getNameStartsWith(ch);
+        List<BabyNameDto> bn = bnService.getNameStartsWith(ch);
         return new ResponseEntity<>(bn, HttpStatus.OK);
     }
 
     @GetMapping("/namesSearch")
-    public ResponseEntity<Object> getNames(@RequestParam(required = true) String input){
-        List<BabyNameDto> bn = service.getNamesContaining(input);
+    public ResponseEntity<Object> getNamesContaining(@RequestParam(required = true) String input){
+        List<BabyNameDto> bn = bnService.getNamesContaining(input);
         return new ResponseEntity<>(bn, HttpStatus.OK);
     }
 
@@ -47,7 +48,7 @@ public class BabyNameController {
             return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
 
         } else {
-            service.insertBabyName(bndto);
+            bnService.insertBabyName(bndto);
             return new ResponseEntity<>("Baby naam toegevoegd!", HttpStatus.CREATED);
         }
     }
