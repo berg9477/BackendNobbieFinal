@@ -9,6 +9,6 @@ import java.util.Map;
 public interface UserProfileService {
     public List<UserProfileDto> getAllUsers();
     public UserProfile createNewUser(UserProfileDto userProfileDto);
-    public UserProfile getUser(Long id);
+    public UserProfileDto getUser(Long id);
     void updateUser(UserProfile u);
 }

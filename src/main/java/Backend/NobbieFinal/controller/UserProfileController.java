@@ -37,7 +37,7 @@ public class UserProfileController {
 
     @GetMapping("/user")
     public ResponseEntity<Object> getUser(@RequestParam Long id) {
-        UserProfile up = service.getUser(id);
+        UserProfileDto up = service.getUser(id);
         return new ResponseEntity<>(up, HttpStatus.OK);
     }
 
@@ -59,7 +59,8 @@ public class UserProfileController {
     }
     @PostMapping("/users/{id}/babynames")
     public ResponseEntity<Object> saveBabyNameForUser(@PathVariable(name = "id") Long id, @RequestBody List<BabyName> babyNames) {
-        UserProfile u = service.getUser(id);
+        UserProfileDto uDto = service.getUser(id);
+        UserProfile u = new UserProfile(uDto.getUsername(), uDto.getFirstname(), uDto.getLastname(), uDto.getEmailaddress(), uDto.getPassword(), uDto.getUserId(), uDto.getRole(), uDto.getEnabled());
         for (BabyName bn : babyNames) {
             BabyName name = (BabyName) bnService.findNameById(bn.getId());
             u.addBabyNameToList(name);

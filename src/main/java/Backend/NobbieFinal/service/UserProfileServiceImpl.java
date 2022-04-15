@@ -26,8 +26,9 @@ public class UserProfileServiceImpl implements UserProfileService{
     }
 
     @Override
-    public UserProfile getUser(Long id) {
-        return this.repos.findById(id).get();
+    public UserProfileDto getUser(Long id) {
+        UserProfile up = this.repos.findById(id).get();
+        return new UserProfileDto(up.getUserId(), up.getUsername(), up.getFirstname(), up.getLastname(), up.getEmailaddress(), up.getPassword(), up.getRole(), up.getEnabled());
     }
 
     @Override

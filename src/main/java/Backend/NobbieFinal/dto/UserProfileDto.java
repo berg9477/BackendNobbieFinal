@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
@@ -21,8 +22,8 @@ public class UserProfileDto {
     @NotBlank
     @Size(min=6, max=10)
     private final String password;
-    @NotBlank
+    @NotNull
     private final Role role;
-    @NotBlank
+    @NotNull
     private final int enabled;
 }
