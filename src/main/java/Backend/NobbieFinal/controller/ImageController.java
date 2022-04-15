@@ -3,6 +3,7 @@ package Backend.NobbieFinal.controller;
 import Backend.NobbieFinal.dto.ImageDto;
 import Backend.NobbieFinal.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,15 +15,13 @@ public class ImageController {
     ImageService service;
 
     @PostMapping("/images")
-    public String upload(@RequestBody MultipartFile file)  {
+    public String upload(@RequestBody MultipartFile file) {
         ImageDto img = new ImageDto(1L);
         try {
             img.content = file.getBytes();
-        }
-        catch (IOException iex){
+        } catch (IOException iex) {
             return "Error while uploading image...";
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             return ex.getMessage();
         }
 
@@ -30,9 +29,10 @@ public class ImageController {
         return "Image uploaded";
     }
 
-//    @GetMapping(value = "/images/{id}", produces = MediaType.IMAGE_PNG_VALUE)
-//    public @ResponseBody
-//    byte[] download(@PathVariable Long id){
-//        //Image img = imgRepos.findById(id).get();
-//        //return img.content;
- }
+    @GetMapping(value = "/images/{id}", produces = MediaType.IMAGE_PNG_VALUE)
+    public @ResponseBody
+    byte[] download(@PathVariable Long id) {
+        ImageDto img = service.findById(id);
+        return img.content;
+    }
+}
