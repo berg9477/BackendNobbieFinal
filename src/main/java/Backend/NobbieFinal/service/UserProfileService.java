@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 public interface UserProfileService {
-    public List<UserProfileDto> getAllUsers();
-    public UserProfile createNewUser(UserProfileDto userProfileDto);
-    public UserProfileDto getUser(Long id);
+    List<UserProfileDto> getAllUsers();
+    UserProfile createNewUser(UserProfileDto userProfileDto);
+    UserProfileDto getUser(Long id);
     void updateUser(UserProfile u);
+    void deleteById(Long id);
+    UserProfileDto resetPasswordById(Long id);
 }

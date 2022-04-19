@@ -2,6 +2,7 @@ package Backend.NobbieFinal.model;
 
 
 import javax.persistence.*;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,6 +86,20 @@ public class UserProfile {
         this.password = password;
     }
 
+    public void resetPassword() {
+        final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < 7; i++)
+        {  // each iteration of the loop randomly chooses a character from chars
+            int randomIndex = random.nextInt(chars.length());
+            sb.append(chars.charAt(randomIndex));
+        }
+        this.password = sb.toString();
+
+    }
+
     public Long getUserId() {
         return userId;
     }
@@ -135,4 +150,5 @@ public class UserProfile {
     public void setEnabled(int enabled) {
         this.enabled = enabled;
     }
+
 }

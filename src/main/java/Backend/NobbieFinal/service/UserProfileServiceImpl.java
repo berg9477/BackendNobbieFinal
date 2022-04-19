@@ -3,6 +3,8 @@ package Backend.NobbieFinal.service;
 import Backend.NobbieFinal.dto.UserProfileDto;
 import Backend.NobbieFinal.model.UserProfile;
 import Backend.NobbieFinal.repository.UserProfileRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,6 +12,9 @@ import java.util.List;
 
 @Service
 public class UserProfileServiceImpl implements UserProfileService{
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private final UserProfileRepository repos;
 
@@ -39,7 +44,7 @@ public class UserProfileServiceImpl implements UserProfileService{
         user.setFirstname(userProfileDto.getFirstname());
         user.setLastname(userProfileDto.getLastname());
         user.setEmailaddress(userProfileDto.getEmailaddress());
-        user.setPassword(userProfileDto.getPassword());
+        user.setPassword(passwordEncoder.encode(userProfileDto.getPassword()));
         user.setRole(userProfileDto.getRole());
         user.setEnabled(userProfileDto.getEnabled());
         return this.repos.save(user);
@@ -48,4 +53,21 @@ public class UserProfileServiceImpl implements UserProfileService{
     public void updateUser(UserProfile u) {
         repos.save(u);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        this.repos.deleteById(id);
+    }
+
+    @Override
+    public UserProfileDto resetPasswordById(Long id) {
+        UserProfile up = this.repos.findById(id).get();
+        up.resetPassword();
+        UserProfileDto user = new UserProfileDto(up.getUserId(), up.getUsername(), up.getFirstname(), up.getLastname(), up.getEmailaddress(), up.getPassword(), up.getRole(), up.getEnabled());
+        up.setPassword(passwordEncoder.encode(up.getPassword()));
+        this.repos.save(up);
+        return user;
+    }
+
+
 }

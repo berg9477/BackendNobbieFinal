@@ -4,7 +4,6 @@ package Backend.NobbieFinal.controller;
 import Backend.NobbieFinal.dto.UserProfileDto;
 import Backend.NobbieFinal.model.BabyName;
 import Backend.NobbieFinal.model.UserProfile;
-import Backend.NobbieFinal.repository.BabyNameRepository;
 import Backend.NobbieFinal.service.BabyNameService;
 import Backend.NobbieFinal.service.UserProfileService;
 import org.springframework.http.HttpStatus;
@@ -69,4 +68,13 @@ public class UserProfileController {
         service.updateUser(u);
         return new ResponseEntity<>("Name saved to users list", HttpStatus.OK);
     }
-}
+    @DeleteMapping("/deleteUser")
+    public ResponseEntity<Object> deleteUserById(@RequestParam Long id) {
+        service.deleteById(id);
+        return new ResponseEntity<>("User has been deleted", HttpStatus.OK);
+    }
+    @PatchMapping("/resetPassword")
+    public ResponseEntity<Object> resetPassword(@RequestParam Long id) {
+        UserProfileDto up = service.resetPasswordById(id);
+        return new ResponseEntity<>(up, HttpStatus.OK);
+    }}
