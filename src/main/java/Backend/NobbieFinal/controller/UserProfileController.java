@@ -68,13 +68,28 @@ public class UserProfileController {
         service.updateUser(u);
         return new ResponseEntity<>("Name saved to users list", HttpStatus.OK);
     }
+
+    //all delete mappings
     @DeleteMapping("/deleteUser")
     public ResponseEntity<Object> deleteUserById(@RequestParam Long id) {
         service.deleteById(id);
         return new ResponseEntity<>("User has been deleted", HttpStatus.OK);
     }
+
+    //all patch mappings
     @PatchMapping("/resetPassword")
     public ResponseEntity<Object> resetPassword(@RequestParam Long id) {
         UserProfileDto up = service.resetPasswordById(id);
         return new ResponseEntity<>(up, HttpStatus.OK);
-    }}
+    }
+
+    @PatchMapping("/connection")
+    public ResponseEntity<Object> setConnection(@RequestParam Long id, Long connection) {
+        UserProfileDto first = service.setConnection(id, connection); //set connection for user initiating the request
+        UserProfileDto second = service.setConnection(connection, id); //also update the connection for the user that's being connected to
+       if(first.getUserId() == null || second.getUserId() == null){
+           return new ResponseEntity<>("userId or connection userId do not exist", HttpStatus.BAD_REQUEST);
+       }
+        return new ResponseEntity<>(id + " and " + connection + " are now connected", HttpStatus.OK);
+    }
+}

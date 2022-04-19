@@ -69,5 +69,18 @@ public class UserProfileServiceImpl implements UserProfileService{
         return user;
     }
 
+    @Override
+    public UserProfileDto setConnection(Long id, Long connection) {
+        try{UserProfile up = this.repos.findById(id).get();
+            up.setConnection(connection);
+            this.repos.save(up);
+            return new UserProfileDto(up.getUserId(), up.getUsername(), up.getFirstname(), up.getLastname(), up.getEmailaddress(), up.getPassword(), up.getRole(), up.getEnabled());
+        } catch (Exception e)
+        {
+            return new UserProfileDto(null, null, null, null, null, null, null, 0);
+        }
+
+    }
+
 
 }

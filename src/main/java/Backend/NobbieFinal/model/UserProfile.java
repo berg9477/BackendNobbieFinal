@@ -33,6 +33,8 @@ public class UserProfile {
 
     private int enabled;
 
+    private Long connection;
+
     public UserProfile(){ }
 
     public UserProfile(String username, String first, String last, String email, String password, Long userId, Role role, int enabled){
@@ -97,7 +99,6 @@ public class UserProfile {
             sb.append(chars.charAt(randomIndex));
         }
         this.password = sb.toString();
-
     }
 
     public Long getUserId() {
@@ -151,4 +152,14 @@ public class UserProfile {
         this.enabled = enabled;
     }
 
+    public Long getConnection() {
+        return connection;
+    }
+
+    public void setConnection(Long connection) {
+        //we only perform this action if the userId is not the same as current userId
+        if(!connection.equals(this.getUserId())) {
+            this.connection = connection;
+        }
+    }
 }

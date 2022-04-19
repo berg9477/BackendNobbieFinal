@@ -4,7 +4,6 @@ import Backend.NobbieFinal.dto.UserProfileDto;
 import Backend.NobbieFinal.model.UserProfile;
 
 import java.util.List;
-import java.util.Map;
 
 public interface UserProfileService {
     List<UserProfileDto> getAllUsers();
@@ -13,4 +12,5 @@ public interface UserProfileService {
     void updateUser(UserProfile u);
     void deleteById(Long id);
     UserProfileDto resetPasswordById(Long id);
+    UserProfileDto setConnection(Long id, Long connection);
 }
