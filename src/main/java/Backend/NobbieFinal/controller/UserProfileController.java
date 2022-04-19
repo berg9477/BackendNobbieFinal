@@ -1,6 +1,7 @@
 package Backend.NobbieFinal.controller;
 
 
+import Backend.NobbieFinal.dto.BabyNameDto;
 import Backend.NobbieFinal.dto.UserProfileDto;
 import Backend.NobbieFinal.model.BabyName;
 import Backend.NobbieFinal.service.BabyNameService;
@@ -35,6 +36,12 @@ public class UserProfileController {
     public ResponseEntity<Object> getUser(@RequestParam Long id) {
         UserProfileDto up = service.getUser(id);
         return new ResponseEntity<>(up, HttpStatus.OK);
+    }
+
+    @GetMapping("/users/{id}/babynames")
+    public ResponseEntity<Object> getListOfSavedBabyNames(@PathVariable(name = "id") Long id, @RequestParam Boolean match) {
+        List<BabyNameDto> names = service.getSavedNames(id, match);
+        return new ResponseEntity<>(names, HttpStatus.OK);
     }
 
     //All post mappings

@@ -1,5 +1,6 @@
 package Backend.NobbieFinal.service;
 
+import Backend.NobbieFinal.dto.BabyNameDto;
 import Backend.NobbieFinal.dto.UserProfileDto;
 import Backend.NobbieFinal.model.BabyName;
 import Backend.NobbieFinal.model.UserProfile;
@@ -55,6 +56,7 @@ public class UserProfileServiceImpl implements UserProfileService{
     }
     @Override
     public Boolean saveBabyName(Long id, Long nameId) {
+        boolean ret = false;
         //step 1 save name
         UserProfile up = this.repos.findById(id).get();
         BabyName name = this.bnRepos.getById(nameId);
@@ -64,13 +66,39 @@ public class UserProfileServiceImpl implements UserProfileService{
         Long conn = up.getConnection();
         UserProfile connection = conn != null ? this.repos.findById(conn).get(): null;
         //step 3 check list
-        Boolean ret = false;
+        assert connection != null;
         for(BabyName bn : connection.getSavedNamesList()){
             if(bn.getName().equals(name.getName())){
                 ret = true;
             }
         }
         return ret;
+    }
+
+    @Override
+    public List<BabyNameDto> getSavedNames(Long id, Boolean match) {
+        UserProfile up = this.repos.findById(id).get();
+        List<BabyNameDto> names = new ArrayList<>();
+        if (!match) { //only return names saved by user
+            for (BabyName bn : up.getSavedNamesList()) {
+                BabyNameDto babyNameDto = new BabyNameDto(bn.getId(), bn.getName(), bn.getGender(), bn.getListingNumber());
+                names.add(babyNameDto);
+            }
+        } else { //only return names that have a match with connection
+            Long conn = up.getConnection();
+            UserProfile connection = conn != null ? this.repos.findById(conn).get() : null;
+            assert connection != null;
+            for(BabyName conBn : connection.getSavedNamesList()){
+                for (BabyName bn : up.getSavedNamesList()) {
+                    if(conBn == bn) { //loop through both list and add if there is a match
+                        BabyNameDto babyNameDto = new BabyNameDto(bn.getId(), bn.getName(), bn.getGender(), bn.getListingNumber());
+                        names.add(babyNameDto);
+                    }
+                }
+            }
+        }
+        return names;
+
     }
 
     @Override
