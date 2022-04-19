@@ -12,7 +12,7 @@
 	<artifactId>NobbieFinal</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>NobbieFinal</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Final project for backend Saskia Bousardt</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -92,7 +92,9 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${project.parent.version}</version>
 			</plugin>
+
 		</plugins>
 	</build>
+
 
 </project>

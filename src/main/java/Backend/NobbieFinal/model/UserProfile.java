@@ -2,6 +2,7 @@ package Backend.NobbieFinal.model;
 
 
 import javax.persistence.*;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,8 @@ public class UserProfile {
     private Role role;
 
     private int enabled;
+
+    private Long connection;
 
     public UserProfile(){ }
 
@@ -85,6 +88,19 @@ public class UserProfile {
         this.password = password;
     }
 
+    public void resetPassword() {
+        final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < 7; i++)
+        {  // each iteration of the loop randomly chooses a character from chars
+            int randomIndex = random.nextInt(chars.length());
+            sb.append(chars.charAt(randomIndex));
+        }
+        this.password = sb.toString();
+    }
+
     public Long getUserId() {
         return userId;
     }
@@ -116,6 +132,7 @@ public class UserProfile {
     public void setSavedNamesList(List<BabyName> savedNamesList) {
         this.savedNamesList = savedNamesList;
     }
+
     public void addBabyNameToList(BabyName name) {
         savedNamesList.add(name);
     }
@@ -134,5 +151,16 @@ public class UserProfile {
 
     public void setEnabled(int enabled) {
         this.enabled = enabled;
+    }
+
+    public Long getConnection() {
+        return connection;
+    }
+
+    public void setConnection(Long connection) {
+        //we only perform this action if the userId is not the same as current userId
+        if(!connection.equals(this.getUserId())) {
+            this.connection = connection;
+        }
     }
 }
