@@ -1,7 +1,9 @@
 package Backend.NobbieFinal.service;
 
 import Backend.NobbieFinal.dto.UserProfileDto;
+import Backend.NobbieFinal.model.BabyName;
 import Backend.NobbieFinal.model.UserProfile;
+import Backend.NobbieFinal.repository.BabyNameRepository;
 import Backend.NobbieFinal.repository.UserProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,9 +19,11 @@ public class UserProfileServiceImpl implements UserProfileService{
     private PasswordEncoder passwordEncoder;
 
     private final UserProfileRepository repos;
+    private final BabyNameRepository bnRepos;
 
-    public UserProfileServiceImpl(UserProfileRepository repos){
+    public UserProfileServiceImpl(UserProfileRepository repos, BabyNameRepository bnRepos){
         this.repos = repos;
+        this.bnRepos = bnRepos;
     }
 
     @Override
@@ -50,8 +54,23 @@ public class UserProfileServiceImpl implements UserProfileService{
         return this.repos.save(user);
     }
     @Override
-    public void updateUser(UserProfile u) {
-        repos.save(u);
+    public Boolean saveBabyName(Long id, Long nameId) {
+        //step 1 save name
+        UserProfile up = this.repos.findById(id).get();
+        BabyName name = this.bnRepos.getById(nameId);
+        up.addBabyNameToList(name);
+        repos.save(up);
+        //step 2 check if user has connection
+        Long conn = up.getConnection();
+        UserProfile connection = conn != null ? this.repos.findById(conn).get(): null;
+        //step 3 check list
+        Boolean ret = false;
+        for(BabyName bn : connection.getSavedNamesList()){
+            if(bn.getName().equals(name.getName())){
+                ret = true;
+            }
+        }
+        return ret;
     }
 
     @Override
@@ -79,7 +98,6 @@ public class UserProfileServiceImpl implements UserProfileService{
         {
             return new UserProfileDto(null, null, null, null, null, null, null, 0);
         }
-
     }
 
 

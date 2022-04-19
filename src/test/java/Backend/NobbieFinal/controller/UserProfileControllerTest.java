@@ -126,7 +126,7 @@ class UserProfileControllerTest {
     @WithMockUser(username="admin",authorities={"0"})
     public void saveBabyNameForUser() throws Exception {
 
-        BabyName bn = new BabyName(123L,"Saskia", Gender.F, 99);
+        BabyName bn = new BabyName("Saskia", Gender.F, 99);
         List<BabyName> names = Arrays.asList(bn);
 
         Mockito.when(service.getUser(321L)).thenReturn(user);

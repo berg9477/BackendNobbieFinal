@@ -132,6 +132,7 @@ public class UserProfile {
     public void setSavedNamesList(List<BabyName> savedNamesList) {
         this.savedNamesList = savedNamesList;
     }
+
     public void addBabyNameToList(BabyName name) {
         savedNamesList.add(name);
     }

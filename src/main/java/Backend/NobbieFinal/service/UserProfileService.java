@@ -9,8 +9,8 @@ public interface UserProfileService {
     List<UserProfileDto> getAllUsers();
     UserProfile createNewUser(UserProfileDto userProfileDto);
     UserProfileDto getUser(Long id);
-    void updateUser(UserProfile u);
     void deleteById(Long id);
     UserProfileDto resetPasswordById(Long id);
     UserProfileDto setConnection(Long id, Long connection);
+    Boolean saveBabyName(Long id, Long babyName);
 }

@@ -22,8 +22,7 @@ public class BabyName {
 
     public BabyName() { }
 
-    public BabyName(Long id, String name, Gender gender, int listingNumber) {
-        this.id = id;
+    public BabyName(String name, Gender gender, int listingNumber) {
         this.name = name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase(); //name always needs to start with a capital
         this.gender = gender;
         this.listingNumber = listingNumber;

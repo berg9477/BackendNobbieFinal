@@ -3,7 +3,6 @@ package Backend.NobbieFinal.controller;
 
 import Backend.NobbieFinal.dto.UserProfileDto;
 import Backend.NobbieFinal.model.BabyName;
-import Backend.NobbieFinal.model.UserProfile;
 import Backend.NobbieFinal.service.BabyNameService;
 import Backend.NobbieFinal.service.UserProfileService;
 import org.springframework.http.HttpStatus;
@@ -20,11 +19,9 @@ import java.util.List;
 public class UserProfileController {
 
     private final UserProfileService service;
-    private final BabyNameService bnService;
 
     public UserProfileController(UserProfileService service, BabyNameService bnService) {
         this.service = service;
-        this.bnService = bnService;
     }
 
     //All get mappings
@@ -57,16 +54,9 @@ public class UserProfileController {
         }
     }
     @PostMapping("/users/{id}/babynames")
-    public ResponseEntity<Object> saveBabyNameForUser(@PathVariable(name = "id") Long id, @RequestBody List<BabyName> babyNames) {
-        UserProfileDto uDto = service.getUser(id);
-        UserProfile u = new UserProfile(uDto.getUsername(), uDto.getFirstname(), uDto.getLastname(), uDto.getEmailaddress(), uDto.getPassword(), uDto.getUserId(), uDto.getRole(), uDto.getEnabled());
-        for (BabyName bn : babyNames) {
-            BabyName name = (BabyName) bnService.findNameById(bn.getId());
-            u.addBabyNameToList(name);
-            u.addBabyNameToList(name);
-        }
-        service.updateUser(u);
-        return new ResponseEntity<>("Name saved to users list", HttpStatus.OK);
+    public ResponseEntity<Object> saveBabyNameForUser(@PathVariable(name = "id") Long id, @RequestParam Long babyNameId) {
+        Boolean match = service.saveBabyName(id, babyNameId); //if user has a connection the name list of this user is checked. If name also there match is true.
+        return new ResponseEntity<>(match, HttpStatus.OK);
     }
 
     //all delete mappings
