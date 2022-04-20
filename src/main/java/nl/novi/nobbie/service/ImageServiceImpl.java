@@ -41,7 +41,7 @@ public class ImageServiceImpl implements ImageService{
         UserProfile up = this.upRepos.findById(userId).get();
         Image img = up.getPicture();
         if(img == null){
-            throw new Exception("image not found");
+            throw new Exception("Image not found");
         } else {
             ImageDto imageDto = new ImageDto(img.getId(), up);
             imageDto.setContent(img.getContent());

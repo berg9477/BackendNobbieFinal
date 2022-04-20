@@ -6,9 +6,9 @@ import nl.novi.nobbie.model.BabyName;
 import java.util.List;
 
 public interface BabyNameService {
-    List<BabyNameDto> getAllNames();
-    List<BabyNameDto> getNameStartsWith(Character ch);
-    List<BabyNameDto> getNamesContaining(String input);
+    List<BabyNameDto> getAllNames() throws Exception;
+    List<BabyNameDto> getNameStartsWith(Character ch) throws Exception;
+    List<BabyNameDto> getNamesContaining(String input) throws Exception;
     BabyName insertBabyName(BabyNameDto babyNameDto);
     BabyName findNameById(Long id);
 }

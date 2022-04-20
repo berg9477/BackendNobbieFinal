@@ -7,7 +7,7 @@ import nl.novi.nobbie.model.SocialMediaAccount;
 import java.util.List;
 
 public interface SocialMediaAccountService {
-    List<SocialMediaAccountDto> getAllAccounts();
+    List<SocialMediaAccountDto> getAllAccounts() throws Exception;
     SocialMediaAccount createSMA(SocialMediaAccountDto SMAdto);
-    String getSMAMessage(MediaType mediaType, Long id);
+    String getSMAMessage(MediaType mediaType, Long id) throws Exception;
 }

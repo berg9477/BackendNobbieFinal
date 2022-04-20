@@ -17,17 +17,21 @@ public class SocialMediaAccountServiceImpl implements SocialMediaAccountService 
     private final SocialMediaAccountRepository repos;
     private final UserProfileRepository upRepos;
 
-    public SocialMediaAccountServiceImpl(SocialMediaAccountRepository repos, UserProfileRepository upRepos){
+    public SocialMediaAccountServiceImpl(SocialMediaAccountRepository repos, UserProfileRepository upRepos) {
         this.repos = repos;
         this.upRepos = upRepos;
     }
 
     @Override
-    public List<SocialMediaAccountDto> getAllAccounts() {
+    public List<SocialMediaAccountDto> getAllAccounts() throws Exception {
         List<SocialMediaAccount> sma = this.repos.findAll();
-        List<SocialMediaAccountDto> smos = new ArrayList<>();
-        sma.forEach(s -> smos.add(new SocialMediaAccountDto(s.getId(), s.getUserId(), s.getSocialMediaType())));
-        return smos;
+        if (sma.size() == 0) { //Check if any sma's are found, if not throw an error
+            throw new Exception("No social media accounts found");
+        } else {
+            List<SocialMediaAccountDto> smos = new ArrayList<>();
+            sma.forEach(s -> smos.add(new SocialMediaAccountDto(s.getId(), s.getUserId(), s.getSocialMediaType())));
+            return smos;
+        }
     }
 
     @Override
@@ -40,14 +44,18 @@ public class SocialMediaAccountServiceImpl implements SocialMediaAccountService 
     }
 
     @Override
-    public String getSMAMessage(MediaType mediaType, Long id) {
+    public String getSMAMessage(MediaType mediaType, Long id) throws Exception {
         StringBuilder sb = new StringBuilder();
         //get expecting data
         Integer weeksLeft = 0;
         List<Baby> babies = upRepos.getById(id).getBabies();
-        for(Baby b : babies){
-            if(b.getExpected().equals(true)){
-               weeksLeft = b.getWeeksLeft(b.getBirthdate());
+        if (babies.size() == 0) { //check if any babies are found, if not throw an error
+            throw new Exception("No babies found for userId: " + id);
+        } else {
+            for (Baby b : babies) {
+                if (b.getExpected().equals(true)) {
+                    weeksLeft = b.getWeeksLeft(b.getBirthdate());
+                }
             }
         }
         //generate the message
@@ -61,6 +69,4 @@ public class SocialMediaAccountServiceImpl implements SocialMediaAccountService 
         sb.append("#nobbie #aftellen #zwanger #kleineopkomst");
         return sb.toString();
     }
-
-
 }
