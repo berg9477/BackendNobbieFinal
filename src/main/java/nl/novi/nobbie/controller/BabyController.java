@@ -26,7 +26,7 @@ public class BabyController {
         try {
             List<BabyDto> babies = service.getAllBabies();
             return new ResponseEntity<>(babies, HttpStatus.OK);
-        } catch (Exception ex) { //Catch any error while retrieving list of all baby's
+        } catch (Exception ex) { //Catch any error while retrieving list of all babies
             return new ResponseEntity<>("Ophalen lijst met baby's is niet gelukt: "+ex.getMessage(), HttpStatus.CONFLICT);
         }
     }
