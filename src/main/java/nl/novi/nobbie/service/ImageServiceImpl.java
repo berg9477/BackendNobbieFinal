@@ -37,11 +37,15 @@ public class ImageServiceImpl implements ImageService{
     }
 
     @Override
-    public ImageDto findById(Long userId) {
+    public ImageDto findById(Long userId) throws Exception {
         UserProfile up = this.upRepos.findById(userId).get();
         Image img = up.getPicture();
-        ImageDto imageDto = new ImageDto(img.getId(), up);
-        imageDto.setContent(img.getContent());
-        return imageDto;
+        if(img == null){
+            throw new Exception("image not found");
+        } else {
+            ImageDto imageDto = new ImageDto(img.getId(), up);
+            imageDto.setContent(img.getContent());
+            return imageDto;
+        }
     }
 }

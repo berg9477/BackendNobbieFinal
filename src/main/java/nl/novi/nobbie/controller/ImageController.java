@@ -22,9 +22,14 @@ public class ImageController {
     public ResponseEntity<Object> upload(@PathVariable Long id, @RequestBody MultipartFile file) {
         UserProfileDto up = upService.getUser(id);
         if(up == null){
-            return new ResponseEntity<>("UserId not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("UserId niet gevonden", HttpStatus.NOT_FOUND);
         }else {
-            return new ResponseEntity<>(service.saveImg(id, file), HttpStatus.CREATED);
+            try{
+                String save = service.saveImg(id, file);
+                return new ResponseEntity<>(save, HttpStatus.CREATED);
+            } catch (Exception ex){
+            return new ResponseEntity<>("Opslaan afbeelding is mislukt: "+ex.getMessage(), HttpStatus.CONFLICT);
+        }
         }
     }
 
@@ -32,10 +37,14 @@ public class ImageController {
     public ResponseEntity<Object> download(@PathVariable Long id) {
         UserProfileDto up = upService.getUser(id);
         if (up == null) {
-            return new ResponseEntity<>("UserId not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("UserId niet gevonden", HttpStatus.NOT_FOUND);
         } else {
-            ImageDto img = service.findById(id);
-            return new ResponseEntity<>(img.content, HttpStatus.OK);
+            try {
+                ImageDto img = service.findById(id);
+                return new ResponseEntity<>(img.content, HttpStatus.OK);
+            } catch (Exception ex){
+                return new ResponseEntity<>("Geen afbeelding gevonden: "+ex.getMessage(), HttpStatus.NOT_FOUND);
+            }
         }
     }
 }

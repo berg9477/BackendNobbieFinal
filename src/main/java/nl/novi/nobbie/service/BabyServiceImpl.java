@@ -22,11 +22,15 @@ public class BabyServiceImpl implements BabyService{
     }
 
     @Override
-    public List<BabyDto> getAllBabies() {
+    public List<BabyDto> getAllBabies() throws Exception {
         List<Baby> bl = this.repos.findAll();
         List<BabyDto> babies = new ArrayList<>();
-        bl.forEach(b -> babies.add(new BabyDto(b.getId(), b.getNickname(), b.getGender(), b.getBirthdate(), b.getExpected(), b.getUser())));
-        return babies;
+        if (bl.size() == 0){
+            throw new Exception("No baby's found");
+        } else {
+            bl.forEach(b -> babies.add(new BabyDto(b.getId(), b.getNickname(), b.getGender(), b.getBirthdate(), b.getExpected(), b.getUser())));
+            return babies;
+        }
     }
 
     @Override
@@ -43,10 +47,14 @@ public class BabyServiceImpl implements BabyService{
     }
 
     @Override
-    public List<BabyDto> getBabiesById(Long id) {
+    public List<BabyDto> getBabiesById(Long id) throws Exception {
         List<Baby> bl = this.repos.findByUser(this.userRepos.findById(id).get());
-        List<BabyDto> babies = new ArrayList<>();
-        bl.forEach(b -> babies.add(new BabyDto(b.getId(), b.getNickname(), b.getGender(), b.getBirthdate(), b.getExpected(), b.getUser())));
-        return babies;
+        if (bl.size() == 0){ //Check if any baby's are found, if not throw an error
+            throw new Exception("No baby's found for userId: "+id);
+        } else {
+            List<BabyDto> babies = new ArrayList<>();
+            bl.forEach(b -> babies.add(new BabyDto(b.getId(), b.getNickname(), b.getGender(), b.getBirthdate(), b.getExpected(), b.getUser())));
+            return babies;
+        }
     }
 }
