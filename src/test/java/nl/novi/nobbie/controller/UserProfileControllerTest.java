@@ -126,20 +126,12 @@ class UserProfileControllerTest {
     @WithMockUser(username="admin",authorities={"0"})
     public void saveBabyNameForUser() throws Exception {
 
-        BabyName bn = new BabyName("Saskia", Gender.F, 99);
-        List<BabyName> names = Arrays.asList(bn);
+       Mockito.when(service.getUser(321L)).thenReturn(user);
+        Mockito.when(service.saveBabyName(321L, 1L)).thenReturn(true);
 
-        Mockito.when(service.getUser(321L)).thenReturn(user);
-        Mockito.when(babyNameService.findNameById(123L)).thenReturn(bn);
-
-
-        String content = objectMapper.writeValueAsString(names);
-        System.out.println(content);
-
-        //execute test
+       //execute test
         mockMvc.perform(post("/users/321/babynames")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(content))
+                        .param("babyNameId", "1"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

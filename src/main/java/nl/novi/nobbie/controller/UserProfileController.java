@@ -47,16 +47,12 @@ public class UserProfileController {
 
     @GetMapping("/users/{id}/babynames")
     public ResponseEntity<Object> getListOfSavedBabyNames(@PathVariable(name = "id") Long id, @RequestParam Boolean match) {
-        UserProfileDto up = service.getUser(id);
-        if (up == null) {
-            return new ResponseEntity<>("Geen user gevonden voor: " + id, HttpStatus.NOT_FOUND);
-        } else {
-            try {
-                List<BabyNameDto> names = service.getSavedNames(id, match);
-                return new ResponseEntity<>(names, HttpStatus.OK);
-            } catch (Exception ex) { //Catch any error while retrieving user for Id
-                return new ResponseEntity<>("Ophalen lijst met baby namen voor user is niet gelukt: " + ex.getMessage(), HttpStatus.CONFLICT);
-            }
+        try {
+            UserProfileDto up = service.getUser(id);
+            List<BabyNameDto> names = service.getSavedNames(id, match);
+            return new ResponseEntity<>(names, HttpStatus.OK);
+        } catch (Exception ex) { //Catch any error while retrieving user for Id
+            return new ResponseEntity<>("Ophalen lijst met baby namen voor user is niet gelukt: " + ex.getMessage(), HttpStatus.CONFLICT);
         }
     }
 
@@ -81,67 +77,53 @@ public class UserProfileController {
     @PostMapping("/users/{id}/babynames")
     public ResponseEntity<Object> saveBabyNameForUser(@PathVariable(name = "id") Long id, @RequestParam Long
             babyNameId) {
-        UserProfileDto up = service.getUser(id);
-        if (up == null) {
-            return new ResponseEntity<>("Geen user gevonden voor: " + id, HttpStatus.NOT_FOUND);
-        } else {
-            try {
-                Boolean match = service.saveBabyName(id, babyNameId); //if user has a connection the name list of this user is checked. If name also there match is true.
-                return new ResponseEntity<>(match, HttpStatus.OK);
-            } catch (Exception ex) { //Catch any errors while retrieving list of baby's
-                return new ResponseEntity<>("Ophalen lijst met namen is mislukt: " + ex.getMessage(), HttpStatus.CONFLICT);
-            }
+        try {
+            UserProfileDto up = service.getUser(id);
+            Boolean match = service.saveBabyName(id, babyNameId); //if user has a connection the name list of this user is checked. If name also there match is true.
+            return new ResponseEntity<>(match, HttpStatus.OK);
+        } catch (Exception ex) { //Catch any errors while retrieving list of baby's
+            return new ResponseEntity<>("Ophalen lijst met namen is mislukt: " + ex.getMessage(), HttpStatus.CONFLICT);
         }
     }
 
     //all delete mappings
     @DeleteMapping("/deleteUser")
     public ResponseEntity<Object> deleteUserById(@RequestParam Long id) {
-        UserProfileDto up = service.getUser(id);
-        if (up == null) {
-            return new ResponseEntity<>("Geen user gevonden voor: " + id, HttpStatus.NOT_FOUND);
-        } else {
-            try {
-                service.deleteById(id);
-                return new ResponseEntity<>("User is verwijderd", HttpStatus.OK);
-            } catch (Exception ex) { //Catch any errors while retrieving list of baby's
-                return new ResponseEntity<>("Verwijderen van gebruiker is mislukt: " + ex.getMessage(), HttpStatus.CONFLICT);
-            }
+        try {
+            UserProfileDto up = service.getUser(id);
+            service.deleteById(id);
+            return new ResponseEntity<>("User is verwijderd", HttpStatus.OK);
+        } catch (Exception ex) { //Catch any errors while retrieving list of baby's
+            return new ResponseEntity<>("Verwijderen van gebruiker is mislukt: " + ex.getMessage(), HttpStatus.CONFLICT);
         }
     }
 
-//all patch mappings
-        @PatchMapping("/resetPassword")
-        public ResponseEntity<Object> resetPassword (@RequestParam Long id){
+    //all patch mappings
+    @PatchMapping("/resetPassword")
+    public ResponseEntity<Object> resetPassword(@RequestParam Long id) {
+        try {
             UserProfileDto up = service.getUser(id);
-            if (up == null) {
-                return new ResponseEntity<>("Geen user gevonden voor: " + id, HttpStatus.NOT_FOUND);
-            } else {
-                try {
-                    UserProfileDto newPW = service.resetPasswordById(id);
-                    return new ResponseEntity<>(newPW, HttpStatus.OK);
-                } catch (Exception ex) { //Catch any errors while retrieving list of baby's
-                    return new ResponseEntity<>("Resetten van het password is mislukt: " + ex.getMessage(), HttpStatus.CONFLICT);
-                }
-            }
-        }
-
-        @PatchMapping("/connection")
-        public ResponseEntity<Object> setConnection (@RequestParam Long id, Long connection) {
-            UserProfileDto up = service.getUser(id);
-            if (up == null) {
-                return new ResponseEntity<>("Geen user gevonden voor: " + id, HttpStatus.NOT_FOUND);
-            } else {
-                try {
-                    UserProfileDto first = service.setConnection(id, connection); //set connection for user initiating the request
-                    UserProfileDto second = service.setConnection(connection, id); //also update the connection for the user that's being connected to
-                    if (first.getUserId() == null || second.getUserId() == null) {
-                        return new ResponseEntity<>("userId of te koppelen userId bestaat niet", HttpStatus.BAD_REQUEST);
-                    }
-                    return new ResponseEntity<>(id + " en " + connection + " zijn nu gekoppeld", HttpStatus.OK);
-                } catch (Exception ex) {
-                    return new ResponseEntity<>("Het koppelen van de users is mislukt: " + ex.getMessage(), HttpStatus.CONFLICT);
-                }
-            }
+            UserProfileDto newPW = service.resetPasswordById(id);
+            return new ResponseEntity<>(newPW, HttpStatus.OK);
+        } catch (Exception ex) { //Catch any errors while retrieving list of baby's
+            return new ResponseEntity<>("Resetten van het password is mislukt: " + ex.getMessage(), HttpStatus.CONFLICT);
         }
     }
+
+
+    @PatchMapping("/connection")
+    public ResponseEntity<Object> setConnection(@RequestParam Long id, Long connection) {
+        try {
+            UserProfileDto up = service.getUser(id);
+            UserProfileDto first = service.setConnection(id, connection); //set connection for user initiating the request
+            UserProfileDto second = service.setConnection(connection, id); //also update the connection for the user that's being connected to
+            if (first.getUserId() == null || second.getUserId() == null) {
+                return new ResponseEntity<>("userId of te koppelen userId bestaat niet", HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(id + " en " + connection + " zijn nu gekoppeld", HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>("Het koppelen van de users is mislukt: " + ex.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
+}
