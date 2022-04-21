@@ -200,7 +200,7 @@ class UserProfileControllerTest {
     @WithMockUser(username="admin",authorities={"0"})
     void resetPasswordForUser() throws Exception {
 
-        //mock triggering an exception
+        //given
         Mockito.when(service.resetPasswordById(321L)).thenReturn(user);
 
         //execute test
@@ -213,8 +213,23 @@ class UserProfileControllerTest {
 
     @Test
     @WithMockUser(username="admin",authorities={"0"})
-    void setConnectionForUser() throws Exception {
+    void resetPasswordFails() throws Exception {
+
         //mock triggering an exception
+        Mockito.doThrow(Exception.class).when(service).resetPasswordById(321L);
+
+        //execute test
+        mockMvc.perform(MockMvcRequestBuilders.patch("/resetPassword")
+                        .param("id", "321"))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Resetten van het password is mislukt: null"));
+    }
+
+    @Test
+    @WithMockUser(username="admin",authorities={"0"})
+    void setConnectionForUser() throws Exception {
+        //mock using service to connect users
         Mockito.when(service.setConnection(321L, 1L)).thenReturn(user);
         Mockito.when(service.setConnection(1L, 321L)).thenReturn(user);
 
@@ -228,4 +243,20 @@ class UserProfileControllerTest {
                 .andExpect(content().string("321 en 1 zijn nu gekoppeld"));
 
     }
+
+    @Test
+    @WithMockUser(username="admin",authorities={"0"})
+    void setConnectionFails() throws Exception {
+        //mock triggering an exception
+        Mockito.doThrow(Exception.class).when(service).setConnection(1000L, 321L);
+
+        //execute test
+        mockMvc.perform(MockMvcRequestBuilders.patch("/connection")
+                        .param("id", "321")
+                        .param("connection", "1"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+
 }

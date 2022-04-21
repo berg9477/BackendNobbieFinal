@@ -105,7 +105,6 @@ public class UserProfileController {
         }
     }
 
-
     @PatchMapping("/connection")
     public ResponseEntity<Object> setConnection(@RequestParam Long id, Long connection) {
         try {
@@ -119,5 +118,4 @@ public class UserProfileController {
             return new ResponseEntity<>("Het koppelen van de users is mislukt: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
 }
