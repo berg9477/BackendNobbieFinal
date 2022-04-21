@@ -21,7 +21,7 @@ public class ImageController {
             String save = service.saveImg(id, file);
             return new ResponseEntity<>(save, HttpStatus.CREATED);
         } catch (Exception ex) {
-            return new ResponseEntity<>("Opslaan afbeelding is mislukt: " + ex.getMessage(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Opslaan afbeelding is mislukt: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
     }

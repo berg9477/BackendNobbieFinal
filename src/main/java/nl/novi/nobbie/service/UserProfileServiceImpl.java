@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class UserProfileServiceImpl implements UserProfileService {
@@ -41,10 +40,10 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public UserProfileDto getUser(Long id) throws Exception {
-        try {
+        if(this.repos.findById(id).isPresent()) {
             UserProfile up = this.repos.findById(id).get();
             return new UserProfileDto(up.getUserId(), up.getUsername(), up.getFirstname(), up.getLastname(), up.getEmailaddress(), up.getPassword(), up.getRole(), up.getEnabled());
-        } catch (NoSuchElementException ex) {
+        } else {
             throw new Exception("No user found for id: " + id);
         }
     }
@@ -67,7 +66,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     public Boolean saveBabyName(Long id, Long nameId) throws Exception {
         boolean ret = false;
         //step 1 save name
-        try {
+        if(this.repos.findById(id).isPresent()) {
             UserProfile up = this.repos.findById(id).get();
             BabyName name = this.bnRepos.getById(nameId);
             if (name.getName() == null) {
@@ -77,7 +76,7 @@ public class UserProfileServiceImpl implements UserProfileService {
             repos.save(up);
             //step 2 check if user has connection
             Long conn = up.getConnection();
-            UserProfile connection = conn != null ? this.repos.findById(conn).get() : null;
+            UserProfile connection = this.repos.findById(conn).isPresent() ? this.repos.findById(conn).get() : null;
             //step 3 check list
             assert connection != null;
             for (BabyName bn : connection.getSavedNamesList()) {
@@ -86,14 +85,14 @@ public class UserProfileServiceImpl implements UserProfileService {
                 }
             }
             return ret;
-        } catch (NoSuchElementException ex) {
+        } else {
             throw new Exception("No user found for id: " + id);
         }
     }
 
     @Override
     public List<BabyNameDto> getSavedNames(Long id, Boolean match) throws Exception {
-        try {
+        if(this.repos.findById(id).isPresent()) {
             UserProfile up = this.repos.findById(id).get();
             List<BabyNameDto> names = new ArrayList<>();
             if (!match) { //only return names saved by user
@@ -118,38 +117,43 @@ public class UserProfileServiceImpl implements UserProfileService {
                 }
             }
             return names;
-        } catch (NoSuchElementException ex) {
+        } else {
             throw new Exception("No user found for id: " + id);
         }
     }
 
     @Override
-    public void deleteById(Long id) {
-        this.repos.deleteById(id);
+    public void deleteById(Long id) throws Exception {
+        if(this.repos.findById(id).isPresent()){
+            this.repos.deleteById(id);
+        }
+        else{
+            throw new Exception("No user found to delete");
+        }
     }
 
     @Override
     public UserProfileDto resetPasswordById(Long id) throws Exception {
-        try {
+        if(this.repos.findById(id).isPresent()) {
             UserProfile up = this.repos.findById(id).get();
             up.resetPassword();
             UserProfileDto user = new UserProfileDto(up.getUserId(), up.getUsername(), up.getFirstname(), up.getLastname(), up.getEmailaddress(), up.getPassword(), up.getRole(), up.getEnabled());
             up.setPassword(passwordEncoder.encode(up.getPassword()));
             this.repos.save(up);
             return user;
-        } catch (NoSuchElementException ex) {
+        } else {
             throw new Exception("No user found for id: " + id);
         }
     }
 
     @Override
     public UserProfileDto setConnection(Long id, Long connection) throws Exception {
-        try {
+        if(this.repos.findById(id).isPresent()) {
             UserProfile up = this.repos.findById(id).get();
             up.setConnection(connection);
             this.repos.save(up);
             return new UserProfileDto(up.getUserId(), up.getUsername(), up.getFirstname(), up.getLastname(), up.getEmailaddress(), up.getPassword(), up.getRole(), up.getEnabled());
-        } catch (NoSuchElementException ex) {
+        } else {
             throw new Exception("No user found for id: " + id);
         }
     }

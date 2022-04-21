@@ -25,12 +25,12 @@ public class SocialMediaAccountController {
             List<SocialMediaAccountDto> sma = service.getAllAccounts();
             return new ResponseEntity<>(sma, HttpStatus.OK);
         } catch (Exception ex) { //Catch any errors while retrieving list of social media accounts
-            return new ResponseEntity<>("Ophalen lijst met social media accounts is mislukt: " + ex.getMessage(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Ophalen lijst met social media accounts is mislukt: " + ex.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping("/socialMediaAccounts")
-    public ResponseEntity<Object> createSMA(@Valid @RequestBody SocialMediaAccountDto SMAdto, BindingResult br) {
+    public ResponseEntity<Object> createSMA(@Valid @RequestBody SocialMediaAccountDto SMADto, BindingResult br) throws Exception {
         //first check if the request body is filled in correct (SocialMediaAccountDto)
         if (br.hasErrors()) {
             StringBuilder sb = new StringBuilder();
@@ -40,8 +40,13 @@ public class SocialMediaAccountController {
             }
             return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
         } else {
-            service.createSMA(SMAdto);
-            return new ResponseEntity<>("Social media account aangemaakt!", HttpStatus.CREATED);
+            try {
+                service.createSMA(SMADto);
+                return new ResponseEntity<>("Social media account aangemaakt!", HttpStatus.CREATED);
+            } catch (Exception ex){
+                return new ResponseEntity<>("Geen Social media account aangemaakt: "+ex.getMessage(), HttpStatus.BAD_REQUEST);
+
+            }
         }
     }
 
@@ -51,7 +56,7 @@ public class SocialMediaAccountController {
             String message = service.getSMAMessage(mediaType, id);
             return new ResponseEntity<>(message, HttpStatus.OK);
         } catch (Exception ex) { //Catch any errors while generating social media message
-            return new ResponseEntity<>("Genereren social media bericht is mislukt: " + ex.getMessage(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Genereren social media bericht is mislukt: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

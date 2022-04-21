@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface SocialMediaAccountService {
     List<SocialMediaAccountDto> getAllAccounts() throws Exception;
-    SocialMediaAccount createSMA(SocialMediaAccountDto SMAdto);
+    SocialMediaAccount createSMA(SocialMediaAccountDto SMAdto) throws Exception;
     String getSMAMessage(MediaType mediaType, Long id) throws Exception;
 }
