@@ -7,12 +7,12 @@ import nl.novi.nobbie.model.UserProfile;
 import java.util.List;
 
 public interface UserProfileService {
-    List<UserProfileDto> getAllUsers();
+    List<UserProfileDto> getAllUsers() throws Exception;
     UserProfile createNewUser(UserProfileDto userProfileDto);
-    UserProfileDto getUser(Long id);
-    void deleteById(Long id);
-    UserProfileDto resetPasswordById(Long id);
-    UserProfileDto setConnection(Long id, Long connection);
-    Boolean saveBabyName(Long id, Long babyName);
-    List<BabyNameDto> getSavedNames(Long id, Boolean match);
+    UserProfileDto getUser(Long id) throws Exception;
+    void deleteById(Long id) throws Exception;
+    UserProfileDto resetPasswordById(Long id) throws Exception;
+    UserProfileDto setConnection(Long id, Long connection) throws Exception;
+    Boolean saveBabyName(Long id, Long babyName) throws Exception;
+    List<BabyNameDto> getSavedNames(Long id, Boolean match) throws Exception;
 }

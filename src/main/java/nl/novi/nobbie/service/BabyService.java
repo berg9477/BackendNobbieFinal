@@ -6,7 +6,7 @@ import nl.novi.nobbie.model.Baby;
 import java.util.List;
 
 public interface BabyService {
-    public List<BabyDto> getAllBabies();
-    public Baby createBaby(BabyDto babyDto);
-    public List<BabyDto> getBabiesById(Long id);
+    List<BabyDto> getAllBabies() throws Exception;
+    Baby createBaby(BabyDto babyDto);
+    List<BabyDto> getBabiesById(Long id) throws Exception;
 }

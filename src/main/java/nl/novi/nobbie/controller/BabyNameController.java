@@ -17,31 +17,43 @@ public class BabyNameController {
     @Autowired
     BabyNameService bnService;
 
-//All get mappings
-    @GetMapping("/babynames")
+    //All get mappings
+    @GetMapping("/babyNames")
     public ResponseEntity<Object> getAllNames() {
-        List<BabyNameDto> bn = bnService.getAllNames();
-        return new ResponseEntity<>(bn, HttpStatus.OK);
+        try {
+            List<BabyNameDto> bn = bnService.getAllNames();
+            return new ResponseEntity<>(bn, HttpStatus.OK);
+        } catch (Exception ex) { //Catch any errors while retrieving list of names
+            return new ResponseEntity<>("Ophalen lijst met namen is mislukt: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/nameStartsWith")
-    public ResponseEntity<Object> getNameStartsWith(@RequestParam(required = true) Character ch){
-        List<BabyNameDto> bn = bnService.getNameStartsWith(ch);
-        return new ResponseEntity<>(bn, HttpStatus.OK);
+    public ResponseEntity<Object> getNameStartsWith(@RequestParam(required = true) Character ch) {
+        try {
+            List<BabyNameDto> bn = bnService.getNameStartsWith(ch);
+            return new ResponseEntity<>(bn, HttpStatus.OK);
+        } catch (Exception ex) { //Catch any errors while retrieving list of names
+            return new ResponseEntity<>("Ophalen lijst met namen is mislukt: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/namesSearch")
-    public ResponseEntity<Object> getNamesContaining(@RequestParam(required = true) String input){
-        List<BabyNameDto> bn = bnService.getNamesContaining(input);
-        return new ResponseEntity<>(bn, HttpStatus.OK);
+    public ResponseEntity<Object> getNamesContaining(@RequestParam(required = true) String input) {
+        try {
+            List<BabyNameDto> bn = bnService.getNamesContaining(input);
+            return new ResponseEntity<>(bn, HttpStatus.OK);
+        } catch (Exception ex) { //Catch any errors while retrieving list of names
+            return new ResponseEntity<>("Ophalen lijst met namen is mislukt: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
-//All post mappings
-    @PostMapping ("/babynames")
+    //All post mappings
+    @PostMapping("/babyNames")
     public ResponseEntity<Object> insertBabyName(@Valid @RequestBody BabyNameDto bndto, BindingResult br) {
-        if(br.hasErrors()){
+        if (br.hasErrors()) { //first check if the request body is filled in correct (BabyNameDto)
             StringBuilder sb = new StringBuilder();
-            for(FieldError de : br.getFieldErrors()){
+            for (FieldError de : br.getFieldErrors()) {
                 sb.append(de.getDefaultMessage());
                 sb.append("\n");
             }

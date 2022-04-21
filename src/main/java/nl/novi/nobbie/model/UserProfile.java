@@ -1,6 +1,8 @@
 package nl.novi.nobbie.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -112,6 +114,7 @@ public class UserProfile {
         this.userId = userId;
     }
 
+    @JsonIgnore
     public List<Baby> getBabies() {
         return babies;
     }
@@ -120,6 +123,7 @@ public class UserProfile {
         this.babies = babies;
     }
 
+    @JsonIgnore
     public List<SocialMediaAccount> getSocialMediaAccounts() {
         return socialMediaAccounts;
     }
@@ -128,6 +132,7 @@ public class UserProfile {
         this.socialMediaAccounts = socialMediaAccounts;
     }
 
+    @JsonIgnore
     public List<BabyName> getSavedNamesList() {
         return savedNamesList;
     }
@@ -156,6 +161,7 @@ public class UserProfile {
         this.enabled = enabled;
     }
 
+    @JsonIgnore
     public Long getConnection() {
         return connection;
     }
@@ -166,9 +172,9 @@ public class UserProfile {
             this.connection = connection;
         }
     }
-    public Image getPicture() {
-        return picture;
-    }
+
+    @JsonIgnore
+    public Image getPicture() {return picture;    }
 
     public void setPicture(Image picture) {
         this.picture = picture;

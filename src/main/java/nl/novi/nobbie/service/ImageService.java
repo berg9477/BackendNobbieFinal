@@ -5,6 +5,6 @@ import nl.novi.nobbie.model.Image;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface ImageService {
-    public String saveImg(Long id, MultipartFile file);
-    public ImageDto findById(Long id);
+    String saveImg(Long id, MultipartFile file) throws Exception;
+    ImageDto findById(Long id) throws Exception;
 }

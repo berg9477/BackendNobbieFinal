@@ -24,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 
 
 @WebMvcTest
@@ -84,5 +85,32 @@ class ImageControllerTest {
         Assert.assertTrue(img.getId().equals(321L));
 
 
+    }
+
+    @Test
+    @WithMockUser(username="admin",authorities={"0"})
+    void testUploadFails() throws Exception {
+        img.content = file.getBytes();
+
+        Mockito.doThrow(Exception.class).when(service).saveImg(321L, file);
+
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/images/321")
+                        .file(file))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(username="admin",authorities={"0"})
+    void testDownloadFails() throws Exception {
+        //insert testdata
+        img.content = file.getBytes();
+
+        Mockito.doThrow(Exception.class).when(service).findById(321L);
+
+        //execute test
+        mockMvc.perform(get("/images/321"))
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
 }

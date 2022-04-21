@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class BabyNameServiceImpl implements BabyNameService{
+public class BabyNameServiceImpl implements BabyNameService {
 
     private final BabyNameRepository repos;
 
@@ -18,27 +18,39 @@ public class BabyNameServiceImpl implements BabyNameService{
     }
 
     @Override
-    public List<BabyNameDto> getAllNames() {
+    public List<BabyNameDto> getAllNames() throws Exception {
         List<BabyName> bn = this.repos.findAll();
-        List<BabyNameDto> babynames = new ArrayList<>();
-        bn.forEach(b -> babynames.add(new BabyNameDto(b.getId(), b.getName(), b.getGender(), b.getListingNumber())));
-        return babynames;
+        if (bn.size() == 0) {
+            throw new Exception("No names found");
+        } else {
+            List<BabyNameDto> babyNames = new ArrayList<>();
+            bn.forEach(b -> babyNames.add(new BabyNameDto(b.getId(), b.getName(), b.getGender(), b.getListingNumber())));
+            return babyNames;
+        }
     }
 
     @Override
-    public List<BabyNameDto> getNameStartsWith(Character ch) {
+    public List<BabyNameDto> getNameStartsWith(Character ch) throws Exception {
         List<BabyName> bn = this.repos.findBabyNameByNameStartingWith(ch);
-        List<BabyNameDto> babynames = new ArrayList<>();
-        bn.forEach(b -> babynames.add(new BabyNameDto(b.getId(), b.getName(), b.getGender(), b.getListingNumber())));
-        return babynames;
+        if (bn.size() == 0) {
+            throw new Exception("No names found for character: "+ch);
+        } else {
+            List<BabyNameDto> babyNames = new ArrayList<>();
+            bn.forEach(b -> babyNames.add(new BabyNameDto(b.getId(), b.getName(), b.getGender(), b.getListingNumber())));
+            return babyNames;
+        }
     }
 
     @Override
-    public List<BabyNameDto> getNamesContaining(String input) {
+    public List<BabyNameDto> getNamesContaining(String input) throws Exception {
         List<BabyName> bn = this.repos.findBabyNameByNameContaining(input);
-        List<BabyNameDto> babynames = new ArrayList<>();
-        bn.forEach(b -> babynames.add(new BabyNameDto(b.getId(), b.getName(), b.getGender(), b.getListingNumber())));
-        return babynames;
+        if (bn.size() == 0) {
+            throw new Exception("No names found for input: "+input);
+        } else {
+            List<BabyNameDto> babyNames = new ArrayList<>();
+            bn.forEach(b -> babyNames.add(new BabyNameDto(b.getId(), b.getName(), b.getGender(), b.getListingNumber())));
+            return babyNames;
+        }
     }
 
     @Override
@@ -48,10 +60,5 @@ public class BabyNameServiceImpl implements BabyNameService{
         bn.setName(babyNameDto.getName());
         bn.setListingNumber(babyNameDto.getListingNumber());
         return this.repos.save(bn);
-    }
-
-    @Override
-    public BabyName findNameById(Long id) {
-        return this.repos.findById(id).get();
     }
 }

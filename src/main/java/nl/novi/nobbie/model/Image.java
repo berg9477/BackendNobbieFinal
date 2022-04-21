@@ -15,7 +15,7 @@ public class Image {
     @JoinColumn(name = "userId")
     public UserProfile user;
 
-    public Image(){};
+    public Image(){}
 
     public Image(byte[] content, UserProfile user){
         this.content = content;
