@@ -61,9 +61,4 @@ public class BabyNameServiceImpl implements BabyNameService {
         bn.setListingNumber(babyNameDto.getListingNumber());
         return this.repos.save(bn);
     }
-
-    @Override
-    public BabyName findNameById(Long id) {
-        return this.repos.findById(id).get();
-    }
 }

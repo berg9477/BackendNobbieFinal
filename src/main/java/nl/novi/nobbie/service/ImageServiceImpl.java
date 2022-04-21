@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @Service
-public class ImageServiceImpl implements ImageService{
+public class ImageServiceImpl implements ImageService {
     private final ImageRepository repos;
     private final UserProfileRepository upRepos;
 
@@ -21,31 +21,39 @@ public class ImageServiceImpl implements ImageService{
     }
 
     @Override
-    public String saveImg(Long userId, MultipartFile file) {
-        UserProfile up = this.upRepos.findById(userId).get();
-        Image img = new Image();
-        try {
-            img.content = file.getBytes();
-            img.setUser(up);
-            repos.save(img);
-        } catch (IOException iex) {
-            return "Error while uploading image...";
-        } catch (Exception ex) {
-            return ex.getMessage();
+    public String saveImg(Long userId, MultipartFile file) throws Exception {
+        if (this.upRepos.findById(userId).isPresent()) {
+            UserProfile up = this.upRepos.findById(userId).get();
+            Image img = new Image();
+            try {
+                img.content = file.getBytes();
+                img.setUser(up);
+                repos.save(img);
+            } catch (IOException iex) {
+                throw new Exception("Error while uploading image...");
+            } catch (Exception ex) {
+                throw new Exception(ex.getMessage());
+            }
+            return "Image uploaded";
+        } else {
+            throw new Exception("No user found for userId: " + userId);
         }
-        return "Image uploaded";
     }
 
     @Override
     public ImageDto findById(Long userId) throws Exception {
-        UserProfile up = this.upRepos.findById(userId).get();
-        Image img = up.getPicture();
-        if(img == null){
-            throw new Exception("Image not found");
+        if (this.upRepos.findById(userId).isPresent()) {
+            UserProfile up = this.upRepos.findById(userId).get();
+            Image img = up.getPicture();
+            if (img == null) {
+                throw new Exception("Image not found");
+            } else {
+                ImageDto imageDto = new ImageDto(img.getId(), up);
+                imageDto.setContent(img.getContent());
+                return imageDto;
+            }
         } else {
-            ImageDto imageDto = new ImageDto(img.getId(), up);
-            imageDto.setContent(img.getContent());
-            return imageDto;
+            throw new Exception("No user found for userId: " + userId);
         }
     }
 }

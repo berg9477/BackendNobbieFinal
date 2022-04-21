@@ -64,7 +64,7 @@ class BabyNameControllerTest {
         given(service.getAllNames()).willReturn(names);
 
         //execute test
-        mockMvc.perform(get("/babynames"))
+        mockMvc.perform(get("/babyNames"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$").exists())
@@ -117,7 +117,7 @@ class BabyNameControllerTest {
         String content = objectMapper.writeValueAsString(bnDto);
 
         //execute test
-        mockMvc.perform(post("/babynames")
+        mockMvc.perform(post("/babyNames")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andDo(print())

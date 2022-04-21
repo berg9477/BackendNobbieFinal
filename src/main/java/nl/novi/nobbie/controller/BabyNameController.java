@@ -18,13 +18,13 @@ public class BabyNameController {
     BabyNameService bnService;
 
     //All get mappings
-    @GetMapping("/babynames")
+    @GetMapping("/babyNames")
     public ResponseEntity<Object> getAllNames() {
         try {
             List<BabyNameDto> bn = bnService.getAllNames();
             return new ResponseEntity<>(bn, HttpStatus.OK);
         } catch (Exception ex) { //Catch any errors while retrieving list of names
-            return new ResponseEntity<>("Ophalen lijst met namen is mislukt: " + ex.getMessage(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Ophalen lijst met namen is mislukt: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -34,7 +34,7 @@ public class BabyNameController {
             List<BabyNameDto> bn = bnService.getNameStartsWith(ch);
             return new ResponseEntity<>(bn, HttpStatus.OK);
         } catch (Exception ex) { //Catch any errors while retrieving list of names
-            return new ResponseEntity<>("Ophalen lijst met namen is mislukt: " + ex.getMessage(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Ophalen lijst met namen is mislukt: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -44,12 +44,12 @@ public class BabyNameController {
             List<BabyNameDto> bn = bnService.getNamesContaining(input);
             return new ResponseEntity<>(bn, HttpStatus.OK);
         } catch (Exception ex) { //Catch any errors while retrieving list of names
-            return new ResponseEntity<>("Ophalen lijst met namen is mislukt: " + ex.getMessage(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Ophalen lijst met namen is mislukt: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     //All post mappings
-    @PostMapping("/babynames")
+    @PostMapping("/babyNames")
     public ResponseEntity<Object> insertBabyName(@Valid @RequestBody BabyNameDto bndto, BindingResult br) {
         if (br.hasErrors()) { //first check if the request body is filled in correct (BabyNameDto)
             StringBuilder sb = new StringBuilder();

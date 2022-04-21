@@ -10,5 +10,4 @@ public interface BabyNameService {
     List<BabyNameDto> getNameStartsWith(Character ch) throws Exception;
     List<BabyNameDto> getNamesContaining(String input) throws Exception;
     BabyName insertBabyName(BabyNameDto babyNameDto);
-    BabyName findNameById(Long id);
 }

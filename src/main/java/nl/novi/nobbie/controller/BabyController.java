@@ -24,7 +24,7 @@ public class BabyController {
             List<BabyDto> babies = service.getAllBabies();
             return new ResponseEntity<>(babies, HttpStatus.OK);
         } catch (Exception ex) { //Catch any error while retrieving list of all babies
-            return new ResponseEntity<>("Ophalen lijst met baby's is niet gelukt: " + ex.getMessage(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Ophalen lijst met baby's is niet gelukt: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -34,7 +34,7 @@ public class BabyController {
             List<BabyDto> babies = service.getBabiesById(id);
             return new ResponseEntity<>(babies, HttpStatus.OK);
         } catch (Exception ex) { //Catch any errors while retrieving list of baby's
-            return new ResponseEntity<>("Ophalen lijst met baby's is mislukt: " + ex.getMessage(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>("Ophalen lijst met baby's is mislukt: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
     }
