@@ -1,6 +1,7 @@
 package nl.novi.nobbie.controller;
 
 import nl.novi.nobbie.dto.BabyNameDto;
+import nl.novi.nobbie.model.BabyName;
 import nl.novi.nobbie.service.BabyNameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,7 +51,7 @@ public class BabyNameController {
 
     //All post mappings
     @PostMapping("/babyNames")
-    public ResponseEntity<Object> insertBabyName(@Valid @RequestBody BabyNameDto bndto, BindingResult br) {
+    public ResponseEntity<Object> insertBabyName(@Valid @RequestBody BabyNameDto bndto, BindingResult br) throws Exception {
         if (br.hasErrors()) { //first check if the request body is filled in correct (BabyNameDto)
             StringBuilder sb = new StringBuilder();
             for (FieldError de : br.getFieldErrors()) {
@@ -60,8 +61,12 @@ public class BabyNameController {
             return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
 
         } else {
-            bnService.insertBabyName(bndto);
-            return new ResponseEntity<>("Baby naam toegevoegd!", HttpStatus.CREATED);
+            try {
+                bnService.insertBabyName(bndto);
+                return new ResponseEntity<>("Baby naam toegevoegd!", HttpStatus.CREATED);
+            } catch (Exception ex) { //Catch any errors while adding new name
+                return new ResponseEntity<>("Invoeren nieuwe naam is mislukt: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+            }
         }
     }
 

@@ -51,7 +51,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public UserProfile createNewUser(UserProfileDto userProfileDto) throws Exception {
         //First check if the emailaddress is not already known in the database
-        if (this.repos.existsBy(userProfileDto.getEmailaddress())) {
+        if (!this.repos.existsByEmailaddress(userProfileDto.getEmailaddress())) {
             UserProfile user = new UserProfile();
             user.setUserId(userProfileDto.getUserId());
             user.setUsername(userProfileDto.getUsername());
