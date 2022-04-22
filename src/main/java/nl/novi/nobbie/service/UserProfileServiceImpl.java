@@ -40,7 +40,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public UserProfileDto getUser(Long id) throws Exception {
-        if(this.repos.findById(id).isPresent()) {
+        if (this.repos.findById(id).isPresent()) {
             UserProfile up = this.repos.findById(id).get();
             return new UserProfileDto(up.getUserId(), up.getUsername(), up.getFirstname(), up.getLastname(), up.getEmailaddress(), up.getPassword(), up.getRole(), up.getEnabled());
         } else {
@@ -49,24 +49,29 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     @Override
-    public UserProfile createNewUser(UserProfileDto userProfileDto) {
-        UserProfile user = new UserProfile();
-        user.setUserId(userProfileDto.getUserId());
-        user.setUsername(userProfileDto.getUsername());
-        user.setFirstname(userProfileDto.getFirstname());
-        user.setLastname(userProfileDto.getLastname());
-        user.setEmailaddress(userProfileDto.getEmailaddress());
-        user.setPassword(passwordEncoder.encode(userProfileDto.getPassword()));
-        user.setRole(userProfileDto.getRole());
-        user.setEnabled(userProfileDto.getEnabled());
-        return this.repos.save(user);
+    public UserProfile createNewUser(UserProfileDto userProfileDto) throws Exception {
+        //First check if the emailaddress is not already known in the database
+        if (!this.repos.existsByEmailaddress(userProfileDto.getEmailaddress())) {
+            UserProfile user = new UserProfile();
+            user.setUserId(userProfileDto.getUserId());
+            user.setUsername(userProfileDto.getUsername());
+            user.setFirstname(userProfileDto.getFirstname());
+            user.setLastname(userProfileDto.getLastname());
+            user.setEmailaddress(userProfileDto.getEmailaddress());
+            user.setPassword(passwordEncoder.encode(userProfileDto.getPassword()));
+            user.setRole(userProfileDto.getRole());
+            user.setEnabled(userProfileDto.getEnabled());
+            return this.repos.save(user);
+        } else { //if the emailaddress is already in use we throw an error
+            throw new Exception("There is already a user using this emailaddress: " + userProfileDto.getEmailaddress());
+        }
     }
 
     @Override
     public Boolean saveBabyName(Long id, Long nameId) throws Exception {
         boolean ret = false;
         //step 1 save name
-        if(this.repos.findById(id).isPresent()) {
+        if (this.repos.findById(id).isPresent()) {
             UserProfile up = this.repos.findById(id).get();
             BabyName name = this.bnRepos.getById(nameId);
             if (name.getName() == null) {
@@ -92,7 +97,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public List<BabyNameDto> getSavedNames(Long id, Boolean match) throws Exception {
-        if(this.repos.findById(id).isPresent()) {
+        if (this.repos.findById(id).isPresent()) {
             UserProfile up = this.repos.findById(id).get();
             List<BabyNameDto> names = new ArrayList<>();
             if (!match) { //only return names saved by user
@@ -124,17 +129,16 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public void deleteById(Long id) throws Exception {
-        if(this.repos.findById(id).isPresent()){
+        if (this.repos.findById(id).isPresent()) {
             this.repos.deleteById(id);
-        }
-        else{
+        } else {
             throw new Exception("No user found to delete");
         }
     }
 
     @Override
     public UserProfileDto resetPasswordById(Long id) throws Exception {
-        if(this.repos.findById(id).isPresent()) {
+        if (this.repos.findById(id).isPresent()) {
             UserProfile up = this.repos.findById(id).get();
             up.resetPassword();
             UserProfileDto user = new UserProfileDto(up.getUserId(), up.getUsername(), up.getFirstname(), up.getLastname(), up.getEmailaddress(), up.getPassword(), up.getRole(), up.getEnabled());
@@ -148,7 +152,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public UserProfileDto setConnection(Long id, Long connection) throws Exception {
-        if(this.repos.findById(id).isPresent()) {
+        if (this.repos.findById(id).isPresent()) {
             UserProfile up = this.repos.findById(id).get();
             up.setConnection(connection);
             this.repos.save(up);

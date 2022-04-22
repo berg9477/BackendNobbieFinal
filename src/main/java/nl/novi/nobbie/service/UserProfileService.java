@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserProfileService {
     List<UserProfileDto> getAllUsers() throws Exception;
-    UserProfile createNewUser(UserProfileDto userProfileDto);
+    UserProfile createNewUser(UserProfileDto userProfileDto) throws Exception;
     UserProfileDto getUser(Long id) throws Exception;
     void deleteById(Long id) throws Exception;
     UserProfileDto resetPasswordById(Long id) throws Exception;

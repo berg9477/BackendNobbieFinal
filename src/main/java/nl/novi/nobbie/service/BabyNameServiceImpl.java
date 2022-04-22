@@ -54,11 +54,17 @@ public class BabyNameServiceImpl implements BabyNameService {
     }
 
     @Override
-    public BabyName insertBabyName(BabyNameDto babyNameDto) {
-        BabyName bn = new BabyName();
-        bn.setGender(babyNameDto.getGender());
-        bn.setName(babyNameDto.getName());
-        bn.setListingNumber(babyNameDto.getListingNumber());
-        return this.repos.save(bn);
+    public BabyName insertBabyName(BabyNameDto babyNameDto) throws Exception {
+        //First check if the emailaddress is not already known in the database
+        if (!this.repos.existsByName(babyNameDto.getName())) {
+            BabyName bn = new BabyName();
+            bn.setGender(babyNameDto.getGender());
+            bn.setName(babyNameDto.getName());
+            bn.setListingNumber(babyNameDto.getListingNumber());
+            return this.repos.save(bn);
+        } else {
+            throw new Exception("Name already exists: "+babyNameDto.getName());
+
+        }
     }
 }

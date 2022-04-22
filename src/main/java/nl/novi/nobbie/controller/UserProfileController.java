@@ -3,6 +3,7 @@ package nl.novi.nobbie.controller;
 
 import nl.novi.nobbie.dto.BabyNameDto;
 import nl.novi.nobbie.dto.UserProfileDto;
+import nl.novi.nobbie.model.UserProfile;
 import nl.novi.nobbie.service.BabyNameService;
 import nl.novi.nobbie.service.UserProfileService;
 import org.springframework.http.HttpStatus;
@@ -57,7 +58,7 @@ public class UserProfileController {
 
     //All post mappings
     @PostMapping("/createUser")
-    public ResponseEntity<Object> createNewUser(@Valid @RequestBody UserProfileDto upDto, BindingResult br) {
+    public ResponseEntity<Object> createNewUser(@Valid @RequestBody UserProfileDto upDto, BindingResult br) throws Exception {
         //first check if the request body is filled in correct (UserProfileDto)
         if (br.hasErrors()) {
             StringBuilder sb = new StringBuilder();
@@ -66,9 +67,13 @@ public class UserProfileController {
                 sb.append("\n");
             }
             return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
-
         } else {
-            return new ResponseEntity<>(service.createNewUser(upDto), HttpStatus.CREATED);
+            try {
+                UserProfile up = service.createNewUser(upDto);
+                return new ResponseEntity<>(up, HttpStatus.CREATED);
+            } catch (Exception ex) { //Catch any errors while creating new user
+                return new ResponseEntity<>("Aanmaken user is mislukt: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+            }
         }
     }
 
