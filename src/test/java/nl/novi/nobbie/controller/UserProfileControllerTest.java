@@ -113,7 +113,6 @@ class UserProfileControllerTest {
 
         Mockito.when(service.createNewUser(user)).thenReturn(u);
         String content = objectMapper.writeValueAsString(user);
-        System.out.println(content);
 
         //execute test
         mockMvc.perform(post("/createUser")
@@ -121,6 +120,21 @@ class UserProfileControllerTest {
                         .content(content))
                 .andDo(print())
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    @WithMockUser(username="admin",authorities={"0"})
+    public void createUserFails() throws Exception {
+
+        Mockito.doThrow(Exception.class).when(service).createNewUser(user);
+        String content = objectMapper.writeValueAsString(user);
+
+        //execute test
+        mockMvc.perform(post("/createUser")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 
     @Test
