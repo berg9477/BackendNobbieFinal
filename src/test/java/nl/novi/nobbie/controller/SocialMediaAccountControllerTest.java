@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import javax.sql.DataSource;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
@@ -34,10 +33,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {NobbieFinalApplication.class})
 class SocialMediaAccountControllerTest {
 
-    //insert testdata
+
+    //insert generic testdata
     UserProfile user = new UserProfile("username", "first", "last", "email@grs.nl", "123", 321L, Role.USER, 1);
     SocialMediaAccountDto SMADto = new SocialMediaAccountDto(123L, user, MediaType.Facebook);
-    List<SocialMediaAccountDto> SMAList = Arrays.asList(SMADto);
+    List<SocialMediaAccountDto> SMAList = List.of(SMADto);
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -73,7 +73,7 @@ class SocialMediaAccountControllerTest {
     @WithMockUser(username = "admin", authorities = {"0"})
     void getAllAccountsFails() throws Exception {
 
-        //Mock throwing an error
+        //Given - Exception
         Mockito.doThrow(Exception.class).when(service).getAllAccounts();
 
         //execute test
@@ -86,13 +86,16 @@ class SocialMediaAccountControllerTest {
     @WithMockUser(username = "admin", authorities = {"0"})
     public void createNewSMAForUser() throws Exception {
 
+        //Create SMA for mocking createSMA service
         SocialMediaAccount SMA = new SocialMediaAccount();
         SMA.setId(SMADto.getId());
         SMA.setUserId(SMADto.getUser());
         SMA.setSocialMediaType(SMADto.getSocialMediaType());
 
+        //Given
         Mockito.when(service.createSMA(SMADto)).thenReturn(SMA);
 
+        //Map input for JSON Request body
         String content = objectMapper.writeValueAsString(SMADto);
 
         //execute test
@@ -105,11 +108,13 @@ class SocialMediaAccountControllerTest {
 
     @Test
     @WithMockUser(username = "admin", authorities = {"0"})
-    void createSMAFails() throws Exception {
-        //Mock throwing an error
+    void createSMAFailsAtServiceLayer() throws Exception {
+
+        //Given - Exception
         Mockito.doThrow(Exception.class).when(service).createSMA(SMADto);
-        //send in empty content to trigger fail path
-        String content = objectMapper.writeValueAsString("");
+
+        //Map input for JSON Request body
+        String content = objectMapper.writeValueAsString(user);
 
         //execute test
         mockMvc.perform(post("/socialMediaAccounts")
@@ -121,14 +126,33 @@ class SocialMediaAccountControllerTest {
 
     @Test
     @WithMockUser(username = "admin", authorities = {"0"})
-    void generateSocialMediaMessageForUser() throws Exception{
+    void createSMAInvalidInputFail() throws Exception {
 
+        //Map input for JSON Request body
+        String content = objectMapper.writeValueAsString(SMADto);
+        //Set value to null to trigger error
+        content = content.replace("Facebook", "null");
+
+        //execute test
+        mockMvc.perform(post("/socialMediaAccounts")
+                        .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"0"})
+    void generateSocialMediaMessageForUser() throws Exception {
+
+        //given
         Mockito.when(service.getSMAMessage(MediaType.Facebook, 321L)).thenReturn("Hoi Facebook, ik ben Zwanger!");
 
         //execute test
         mockMvc.perform(get("/socialMediaMessage")
-                        .param("mediaType","Facebook")
-                        .param("id","321"))
+                        .param("mediaType", "Facebook")
+                        .param("id", "321"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("Hoi Facebook, ik ben Zwanger!"));

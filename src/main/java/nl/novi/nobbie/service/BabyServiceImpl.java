@@ -22,19 +22,23 @@ public class BabyServiceImpl implements BabyService{
     }
 
     @Override
+    //Return list of all babies in repository
     public List<BabyDto> getAllBabies() throws Exception {
         List<Baby> bl = this.repos.findAll();
         List<BabyDto> babies = new ArrayList<>();
-        if (bl.size() == 0){
-            throw new Exception("No baby's found");
+        if (bl.size() == 0){ //Check if any results where returned
+            throw new Exception("No babies found");
         } else {
+            //Map to Dto object and add to result list
             bl.forEach(b -> babies.add(new BabyDto(b.getId(), b.getNickname(), b.getGender(), b.getBirthdate(), b.getExpected(), b.getUser())));
             return babies;
         }
     }
 
     @Override
+    //Inserts a new baby for a specific user
     public Baby createBaby(BabyDto babyDto) {
+        //Map from Dto object for saving
         Baby b = new Baby();
         b.setId(babyDto.getId());
         b.setNickname(babyDto.getNickname());
@@ -47,13 +51,16 @@ public class BabyServiceImpl implements BabyService{
     }
 
     @Override
+    //Returns list of babies for a specific user
     public List<BabyDto> getBabiesById(Long id) throws Exception {
+        //Check if user can be found
         if(this.userRepos.findById(id).isPresent()) {
             List<Baby> bl = this.repos.findByUser(this.userRepos.findById(id).get());
-            if (bl.size() == 0) { //Check if any baby's are found, if not throw an error
+            if (bl.size() == 0) { //Check if any babies are found, if not throw an error
                 throw new Exception("No baby's found for userId: " + id);
             } else {
                 List<BabyDto> babies = new ArrayList<>();
+                //Map to Dto and add to result list
                 bl.forEach(b -> babies.add(new BabyDto(b.getId(), b.getNickname(), b.getGender(), b.getBirthdate(), b.getExpected(), b.getUser())));
                 return babies;
             }

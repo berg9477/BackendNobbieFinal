@@ -21,11 +21,13 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    //Uploading an image to repository
     public String saveImg(Long userId, MultipartFile file) throws Exception {
+        //Check if user can be found
         if (this.upRepos.findById(userId).isPresent()) {
             UserProfile up = this.upRepos.findById(userId).get();
             Image img = new Image();
-            try {
+            try { //Saving the image
                 img.content = file.getBytes();
                 img.setUser(up);
                 repos.save(img);
@@ -34,20 +36,23 @@ public class ImageServiceImpl implements ImageService {
             } catch (Exception ex) {
                 throw new Exception(ex.getMessage());
             }
-            return "Image uploaded";
+            return "Image uploaded"; //message send if upload was successful
         } else {
             throw new Exception("No user found for userId: " + userId);
         }
     }
 
     @Override
+    //Download image from repository for specific user
     public ImageDto findById(Long userId) throws Exception {
+        //Check if user can be found
         if (this.upRepos.findById(userId).isPresent()) {
             UserProfile up = this.upRepos.findById(userId).get();
             Image img = up.getPicture();
-            if (img == null) {
+            if (img == null) { //check if image was found
                 throw new Exception("Image not found");
             } else {
+                //Map to Dto object
                 ImageDto imageDto = new ImageDto(img.getId(), up);
                 imageDto.setContent(img.getContent());
                 return imageDto;

@@ -99,7 +99,7 @@ public class UserProfile {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < 7; i++)
-        {  // each iteration of the loop randomly chooses a character from chars
+        {  // each iteration (max 7) of the loop randomly chooses a character from chars
             int randomIndex = random.nextInt(chars.length());
             sb.append(chars.charAt(randomIndex));
         }
@@ -126,10 +126,6 @@ public class UserProfile {
     @JsonIgnore
     public List<SocialMediaAccount> getSocialMediaAccounts() {
         return socialMediaAccounts;
-    }
-
-    public void setSocialMediaAccounts(List<SocialMediaAccount> socialMediaAccounts) {
-        this.socialMediaAccounts = socialMediaAccounts;
     }
 
     @JsonIgnore

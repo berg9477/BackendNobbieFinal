@@ -8,11 +8,18 @@ import java.util.List;
 
 public interface UserProfileService {
     List<UserProfileDto> getAllUsers() throws Exception;
+
     UserProfile createNewUser(UserProfileDto userProfileDto) throws Exception;
+
     UserProfileDto getUser(Long id) throws Exception;
+
     void deleteById(Long id) throws Exception;
+
     UserProfileDto resetPasswordById(Long id) throws Exception;
+
     UserProfileDto setConnection(Long id, Long connection) throws Exception;
+
     Boolean saveBabyName(Long id, Long babyName) throws Exception;
+
     List<BabyNameDto> getSavedNames(Long id, Boolean match) throws Exception;
 }
