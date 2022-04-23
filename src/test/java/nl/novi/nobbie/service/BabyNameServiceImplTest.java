@@ -81,4 +81,17 @@ class BabyNameServiceImplTest {
         assertEquals("Laurens", nameList.get(0).getName());
 
     }
+
+    @Test
+    void insertBabyNameFails() {
+        BabyNameDto bn = new BabyNameDto(1L,"Saskia", Gender.F, 1);
+
+        when(repos.existsByName(name.getName())).thenReturn(true);
+
+        try{
+            service.insertBabyName(bn);
+        } catch (Exception e) {
+            assertEquals("Name already exists: "+bn.getName(), e.getMessage());
+        }
+    }
 }
