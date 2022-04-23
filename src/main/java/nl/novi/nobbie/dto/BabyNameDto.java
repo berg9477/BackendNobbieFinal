@@ -10,10 +10,10 @@ import javax.validation.constraints.NotNull;
 public class BabyNameDto {
     private final Long id;
 
-    @NotBlank
+    @NotBlank(message = "Name can not be empty")
     private final String name;
 
-    @NotNull
+    @NotNull(message = "Gender can not be empty")
     private final Gender gender;
 
     private final int listingNumber;

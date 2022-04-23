@@ -1,9 +1,9 @@
 package nl.novi.nobbie.dto;
 
-import nl.novi.nobbie.model.Gender;
-import nl.novi.nobbie.model.UserProfile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import nl.novi.nobbie.model.Gender;
+import nl.novi.nobbie.model.UserProfile;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -12,16 +12,16 @@ import java.time.LocalDate;
 public class BabyDto {
     private final Long id;
 
-    @NotBlank
+    @NotBlank(message = "Nickname can not be empty")
     private final String nickname;
 
-    @NotNull
+    @NotNull(message = "Gender can not be empty")
     private final Gender gender;
 
-    @NotNull
+    @NotNull(message = "Birthdate can not be empty")
     private final LocalDate birthdate;
 
-    @NotNull
+    @NotNull(message = "Expected can not be empty")
     private final Boolean expected;
 
     @JsonIgnore
