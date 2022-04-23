@@ -91,10 +91,22 @@ class BabyControllerTest {
 
     @Test
     @WithMockUser(username="admin",authorities={"0"})
+    void getAllBabiesFails() throws Exception{
+        //Mock throwing an error
+        Mockito.doThrow(Exception.class).when(service).getAllBabies();
+
+        //execute test
+        mockMvc.perform(get("/babies"))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Ophalen lijst met baby's is niet gelukt: null"));
+    }
+
+    @Test
+    @WithMockUser(username="admin",authorities={"0"})
     public void returnListOfBabysByUserId() throws Exception{
 
         Mockito.when(service.getBabiesById(123L)).thenReturn(babies);
-
 
         //execute test
         mockMvc.perform(get("/babiesForUser")
@@ -103,6 +115,20 @@ class BabyControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].birthdate").value("2022-01-22"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
+    }
+
+    @Test
+    @WithMockUser(username="admin",authorities={"0"})
+    void getBabiesByIdFails() throws Exception{
+        //Mock throwing an error
+        Mockito.doThrow(Exception.class).when(service).getBabiesById(123L);
+
+        //execute test
+        mockMvc.perform(get("/babiesForUser")
+                .param("id", "123"))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Ophalen lijst met baby's is mislukt: null"));
     }
 
     @Test
@@ -125,7 +151,6 @@ class BabyControllerTest {
         content = content.replace("}", ",\"userProfile\":");
         content += objectMapper.writeValueAsString(user) + "}";
 
-
         //execute test
         mockMvc.perform(post("/babies")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -135,4 +160,21 @@ class BabyControllerTest {
                 .andExpect(content().string("Baby aangemaakt!"));
     }
 
+    @Test
+    @WithMockUser(username="admin",authorities={"0"})
+        void createBabyFails() throws Exception{
+        //set up request body
+        String content = objectMapper.writeValueAsString(baby);
+        content = content.replace("}", ",\"userProfile\":");
+        content += objectMapper.writeValueAsString(user) + "}";
+        //nickname and expected have @notBlank so must be filled, so replacing them should trigger a validation error
+        content = content.replace("baba", "");
+
+        //execute test
+        mockMvc.perform(post("/babies")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
 }

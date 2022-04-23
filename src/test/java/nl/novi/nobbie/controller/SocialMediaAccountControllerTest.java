@@ -34,10 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {NobbieFinalApplication.class})
 class SocialMediaAccountControllerTest {
 
-    //insert testdata
-    UserProfile user = new UserProfile("username", "first", "last", "email@grs.nl", "123", 321L, Role.USER, 1);
-    SocialMediaAccountDto SMADto = new SocialMediaAccountDto(123L, user, MediaType.Facebook);
-    List<SocialMediaAccountDto> SMAList = Arrays.asList(SMADto);
+
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -54,6 +51,11 @@ class SocialMediaAccountControllerTest {
     private DataSource dataSource;
     @MockBean
     private ImageService imageService;
+
+    //insert testdata
+    UserProfile user = new UserProfile("username", "first", "last", "email@grs.nl", "123", 321L, Role.USER, 1);
+    SocialMediaAccountDto SMADto = new SocialMediaAccountDto(123L, user, MediaType.Facebook);
+    List<SocialMediaAccountDto> SMAList = Arrays.asList(SMADto);
 
     @Test
     @WithMockUser(username = "admin", authorities = {"0"})
@@ -105,11 +107,11 @@ class SocialMediaAccountControllerTest {
 
     @Test
     @WithMockUser(username = "admin", authorities = {"0"})
-    void createSMAFails() throws Exception {
+    void createSMAFailsAtServiceLayer() throws Exception {
         //Mock throwing an error
         Mockito.doThrow(Exception.class).when(service).createSMA(SMADto);
-        //send in empty content to trigger fail path
-        String content = objectMapper.writeValueAsString("");
+
+        String content = objectMapper.writeValueAsString(user);
 
         //execute test
         mockMvc.perform(post("/socialMediaAccounts")
@@ -117,6 +119,21 @@ class SocialMediaAccountControllerTest {
                         .content(content))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"0"})
+    void createSMAInvalidInputFail() throws Exception {
+
+        String content = objectMapper.writeValueAsString(SMADto);
+        content = content.replace("Facebook", "null");
+
+        mockMvc.perform(post("/socialMediaAccounts")
+                        .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
     }
 
     @Test
@@ -132,5 +149,11 @@ class SocialMediaAccountControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("Hoi Facebook, ik ben Zwanger!"));
+    }
+
+
+
+    @Test
+    void getSMAMessage() {
     }
 }
