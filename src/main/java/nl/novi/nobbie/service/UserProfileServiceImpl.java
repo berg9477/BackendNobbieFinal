@@ -83,13 +83,14 @@ public class UserProfileServiceImpl implements UserProfileService {
             Long conn = up.getConnection();
             UserProfile connection = this.repos.findById(conn).isPresent() ? this.repos.findById(conn).get() : null;
             //step 3 check list
-            assert connection != null;
-            for (BabyName bn : connection.getSavedNamesList()) {
-                if (bn.getName().equals(name.getName())) {
-                    ret = true;
+            if(connection != null) {
+                for (BabyName bn : connection.getSavedNamesList()) {
+                    if (bn.getName().equals(name.getName())) {
+                        ret = true;
+                    }
                 }
             }
-            return ret;
+                return ret;
         } else {
             throw new Exception("No user found for id: " + id);
         }

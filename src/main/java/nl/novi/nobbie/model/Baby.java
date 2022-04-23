@@ -36,6 +36,7 @@ public class Baby {
         this.nickname = name;
         this.gender = gen;
         this.expected = expected;
+        this.birthdate = date;
         LocalDate today = LocalDate.now();
         //someone cannot be overdue more than 1 month
         if(expected && today.isAfter(date.plusMonths(1))){

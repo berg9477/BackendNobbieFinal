@@ -52,8 +52,8 @@ public class SocialMediaAccountServiceImpl implements SocialMediaAccountService 
         StringBuilder sb = new StringBuilder();
         //get expecting data
         Integer weeksLeft = 0;
-        if (upRepos.findById(id).isPresent()) { //check if user exists
-            List<Baby> babies = upRepos.getById(id).getBabies();
+        if (this.upRepos.findById(id).isPresent()) { //check if user exists
+            List<Baby> babies = this.upRepos.getById(id).getBabies();
             if (babies.size() == 0) { //check if any babies are found, if not throw an error
                 throw new Exception("No babies found for userId: " + id);
             } else {
