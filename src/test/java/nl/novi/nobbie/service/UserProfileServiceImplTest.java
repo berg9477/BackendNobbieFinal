@@ -37,22 +37,26 @@ class UserProfileServiceImplTest {
     @Mock
     UserProfile userProfile;
 
+    //Setting general input data
     UserProfile user = new UserProfile("username", "first", "last", "email@grs.nl", "123", 321L, Role.USER, 1);
     UserProfile user2 = new UserProfile("fret", "first", "last", "flow@grs.nl", "123", 323L, Role.USER, 1);
     UserProfile user3 = new UserProfile("gdtret", "bla", "grle", "flow2@grs.nl", "123", 3523L, Role.USER, 1);
     BabyName name = new BabyName("Saskia", Gender.F, 1);
-
     List<UserProfile> list = new ArrayList<UserProfile>();
 
     @Test
     void returnListOfUsers() throws Exception {
+        //Add to list for mocking findAll action
         list.add(user);
         list.add(user2);
 
+        //given
         when(repos.findAll()).thenReturn(list);
 
+        //Execute test
         List<UserProfileDto> users = service.getAllUsers();
 
+        //Check results
         assertEquals(2, list.size());
         assertEquals("email@grs.nl", list.get(0).getEmailaddress());
 
@@ -60,21 +64,28 @@ class UserProfileServiceImplTest {
 
     @Test
     void returnUserById() throws Exception {
+        //Given
         when(repos.findById(user.getUserId())).thenReturn(java.util.Optional.ofNullable(user));
 
+        //Execute test
         UserProfileDto upDto = service.getUser(user.getUserId());
 
+        //Check results
         assertEquals("last", upDto.getLastname());
     }
 
     @Test
     void creatingNewUserFails() {
+        //Create UserProfileDTO object for input data of service
         UserProfileDto us = new UserProfileDto(1L, "username", "first", "last", "email@grs.nl", "123", Role.USER, 1);
 
+        //given
         when(repos.existsByEmailaddress(user.getEmailaddress())).thenReturn(true);
         try {
+            //Execute test
             service.createNewUser(us);
         } catch (Exception e) {
+            //Check results
             assertEquals("There is already a user using this emailaddress: email@grs.nl", e.getMessage());
         }
     }
@@ -82,11 +93,14 @@ class UserProfileServiceImplTest {
     @Test
     void saveBabyNameForUserWithoutConnection() throws Exception {
 
+        //given
         when(repos.findById(user.getUserId())).thenReturn(java.util.Optional.ofNullable(user));
         when(bnRepos.getById(1L)).thenReturn(name);
 
+        //Execute test
         boolean test = service.saveBabyName(user.getUserId(), 1L);
 
+        //Check results
         assertFalse(test);
     }
 

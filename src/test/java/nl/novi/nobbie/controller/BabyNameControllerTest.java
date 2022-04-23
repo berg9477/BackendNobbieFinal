@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import javax.sql.DataSource;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
@@ -33,11 +32,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {NobbieFinalApplication.class})
 class BabyNameControllerTest {
 
+    //insert general testdata
+    BabyNameDto bnDto = new BabyNameDto(123L, "Saskia", Gender.F, 99);
+    List<BabyNameDto> names = List.of(bnDto);
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
-
     @MockBean
     private BabyNameService service;
     @MockBean
@@ -51,14 +52,11 @@ class BabyNameControllerTest {
     @MockBean
     private ImageService imageService;
 
-    //insert testdata
-    BabyNameDto bnDto = new BabyNameDto(123L, "Saskia", Gender.F, 99);
-    List<BabyNameDto> names = Arrays.asList(bnDto);
-
     @Test
     @WithMockUser(username = "admin", authorities = {"0"})
     public void returnListOfAllBabyNames() throws Exception {
 
+        //given
         given(service.getAllNames()).willReturn(names);
 
         //execute test
@@ -73,8 +71,10 @@ class BabyNameControllerTest {
     @WithMockUser(username = "admin", authorities = {"0"})
     void getAllNamesFails() throws Exception {
 
+        //Given - Exception
         Mockito.doThrow(Exception.class).when(service).getAllNames();
 
+        //execute test
         mockMvc.perform(get("/babyNames"))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
@@ -85,6 +85,7 @@ class BabyNameControllerTest {
     @WithMockUser(username = "admin", authorities = {"0"})
     public void returnNameStartingWithS() throws Exception {
 
+        //given
         given(service.getNameStartsWith('s')).willReturn(names);
 
         //execute test
@@ -100,6 +101,7 @@ class BabyNameControllerTest {
     @WithMockUser(username = "admin", authorities = {"0"})
     void getNameStartsWithFails() throws Exception {
 
+        //Given - Exception
         Mockito.doThrow(Exception.class).when(service).getNameStartsWith('y');
 
         //execute test
@@ -130,6 +132,7 @@ class BabyNameControllerTest {
     @WithMockUser(username = "admin", authorities = {"0"})
     void getNamesContainingFails() throws Exception {
 
+        //Given - Exception
         Mockito.doThrow(Exception.class).when(service).getNamesContaining("hallloo");
 
         //execute test
@@ -145,14 +148,16 @@ class BabyNameControllerTest {
     @WithMockUser(username = "admin", authorities = {"0"})
     public void InsertNewName() throws Exception {
 
-        //service specific input
+        //create baby name for mocking insertBabyName service
         BabyName baby = new BabyName();
         baby.setId(bnDto.getId());
         baby.setName(bnDto.getName());
         baby.setListingNumber(bnDto.getListingNumber());
 
+        //given
         Mockito.when(service.insertBabyName(bnDto)).thenReturn(baby);
 
+        //Map input for JSON Request body
         String content = objectMapper.writeValueAsString(bnDto);
 
         //execute test
@@ -168,8 +173,10 @@ class BabyNameControllerTest {
     @WithMockUser(username = "admin", authorities = {"0"})
     void insertBabyNameFails() throws Exception {
 
+        //Map input for JSON Request body
         String content = objectMapper.writeValueAsString(bnDto);
-        //Name has validation @notBlank so this should be a trigger for a validation error
+
+        //Name has validation @notBlank so this will trigger a validation error
         content = content.replace("Saskia", "");
 
         //execute test
@@ -178,6 +185,5 @@ class BabyNameControllerTest {
                         .content(content))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
-
     }
 }
