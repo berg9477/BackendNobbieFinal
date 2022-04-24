@@ -37,7 +37,7 @@ public class BabyNameController {
             List<BabyNameDto> bn = bnService.getNameStartsWith(ch);
             return new ResponseEntity<>(bn, HttpStatus.OK);
         } catch (Exception ex) { //Catch any errors while retrieving list of names
-            return new ResponseEntity<>("ORetrieving list of names failed: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Retrieving list of names failed: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

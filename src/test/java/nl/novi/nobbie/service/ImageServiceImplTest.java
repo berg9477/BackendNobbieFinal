@@ -1,7 +1,6 @@
 package nl.novi.nobbie.service;
 
 import nl.novi.nobbie.NobbieFinalApplication;
-import nl.novi.nobbie.dto.ImageDto;
 import nl.novi.nobbie.model.Image;
 import nl.novi.nobbie.model.Role;
 import nl.novi.nobbie.model.UserProfile;
@@ -15,48 +14,49 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
 
-import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-@ContextConfiguration(classes={NobbieFinalApplication.class})
+@ContextConfiguration(classes = {NobbieFinalApplication.class})
 class ImageServiceImplTest {
 
     @Autowired
     ImageService service;
-
+    //Insert general testdata
+    MockMultipartFile file = new MockMultipartFile("file", "foto.png", MediaType.IMAGE_PNG_VALUE, "test".getBytes());
+    UserProfile user = new UserProfile("username", "first", "last", "email@grs.nl", "123", 321L, Role.USER, 1);
     @MockBean
     private ImageRepository repos;
     @MockBean
     private UserProfileRepository upRepos;
 
-    MockMultipartFile file = new MockMultipartFile("file", "foto.png", MediaType.IMAGE_PNG_VALUE, "test".getBytes());
-    UserProfile user = new UserProfile("username", "first", "last", "email@grs.nl", "123", 321L, Role.USER, 1);
-
-
     @Test
     void saveImg() throws Exception {
+        //Create new image for mocking of repository
         Image img = new Image(file.getBytes(), user);
 
+        //Given
         when(upRepos.findById(user.getUserId())).thenReturn(java.util.Optional.ofNullable(user));
         when(repos.save(img)).thenReturn(img);
 
+        //Execute test
         String test = service.saveImg(user.getUserId(), file);
 
+        //Check result
         assertEquals("Image uploaded", test);
     }
 
     @Test
-    void findByIdFails() throws Exception {
+    void findByIdFails(){
+        //Given
         when(upRepos.findById(user.getUserId())).thenReturn(java.util.Optional.ofNullable(user));
         try {
-            ImageDto imageDto = service.findById(user.getUserId());
-        } catch (Exception e){
+            //Execute test
+            service.findById(user.getUserId());
+        } catch (Exception e) {
+            //Check result
             assertEquals("Image not found", e.getMessage());
         }
-
-
     }
 }

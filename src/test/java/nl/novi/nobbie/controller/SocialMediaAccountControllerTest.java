@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class SocialMediaAccountControllerTest {
 
 
-    //insert generic testdata
+    //insert general testdata
     UserProfile user = new UserProfile("username", "first", "last", "email@grs.nl", "123", 321L, Role.USER, 1);
     SocialMediaAccountDto SMADto = new SocialMediaAccountDto(123L, user, MediaType.Facebook);
     List<SocialMediaAccountDto> SMAList = List.of(SMADto);

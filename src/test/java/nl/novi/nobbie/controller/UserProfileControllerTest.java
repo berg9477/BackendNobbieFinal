@@ -249,7 +249,7 @@ class UserProfileControllerTest {
                         .param("id", "321"))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Resetten van het password is mislukt: null"));
+                .andExpect(content().string("Password reset failed: null"));
     }
 
     @Test
@@ -267,7 +267,7 @@ class UserProfileControllerTest {
                         .param("connection", "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string("321 en 1 zijn nu gekoppeld"));
+                .andExpect(content().string("321 and 1 are now connected"));
 
     }
 

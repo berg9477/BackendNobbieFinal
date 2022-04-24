@@ -21,7 +21,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import javax.sql.DataSource;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
@@ -93,7 +92,7 @@ class BabyControllerTest {
         mockMvc.perform(get("/babies"))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Ophalen lijst met baby's is niet gelukt: null"));
+                .andExpect(content().string("Retrieving list of babies failed: null"));
     }
 
     @Test
@@ -124,7 +123,7 @@ class BabyControllerTest {
                         .param("id", "123"))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Ophalen lijst met baby's is mislukt: null"));
+                .andExpect(content().string("Retrieving list of babies failed: null"));
     }
 
     @Test
@@ -155,7 +154,7 @@ class BabyControllerTest {
                         .content(content))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(content().string("Baby aangemaakt!"));
+                .andExpect(content().string("Baby created!"));
     }
 
     @Test
