@@ -38,8 +38,5 @@ public class ImageController {
         } catch (Exception ex) { //Catch any errors while uploading image
             return new ResponseEntity<>("Saving of image failed: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
-
     }
-
-
 }

@@ -32,13 +32,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {NobbieFinalApplication.class})
 class BabyNameControllerTest {
 
-    //insert general testdata
-    BabyNameDto bnDto = new BabyNameDto(123L, "Saskia", Gender.F, 99);
-    List<BabyNameDto> names = List.of(bnDto);
+
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+
     @MockBean
     private BabyNameService service;
     @MockBean
@@ -51,6 +50,10 @@ class BabyNameControllerTest {
     private DataSource dataSource;
     @MockBean
     private ImageService imageService;
+
+    //insert general testdata
+    BabyNameDto bnDto = new BabyNameDto(123L, "Saskia", Gender.F, 99);
+    List<BabyNameDto> names = List.of(bnDto);
 
     @Test
     @WithMockUser(username = "admin", authorities = {"0"})
@@ -78,7 +81,7 @@ class BabyNameControllerTest {
         mockMvc.perform(get("/babyNames"))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Ophalen lijst met namen is mislukt: null"));
+                .andExpect(content().string("Retrieving list of names failed: null"));
     }
 
     @Test
@@ -109,7 +112,7 @@ class BabyNameControllerTest {
                         .param("ch", "y"))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Ophalen lijst met namen is mislukt: null"));
+                .andExpect(content().string("Retrieving list of names failed: null"));
 
     }
 
@@ -140,7 +143,7 @@ class BabyNameControllerTest {
                         .param("input", "hallloo"))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string("Ophalen lijst met namen is mislukt: null"));
+                .andExpect(content().string("Retrieving list of names failed: null"));
 
     }
 

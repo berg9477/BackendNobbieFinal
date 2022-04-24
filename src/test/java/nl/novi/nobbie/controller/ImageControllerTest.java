@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {NobbieFinalApplication.class})
 class ImageControllerTest {
 
-    //insert generic testdata
+    //insert general testdata
     MockMultipartFile file = new MockMultipartFile("file", "foto.png", MediaType.IMAGE_PNG_VALUE, "test".getBytes());
     UserProfile user = new UserProfile("username", "first", "last", "email@grs.nl", "123", 321L, Role.USER, 1);
     ImageDto img = new ImageDto(321L, user);

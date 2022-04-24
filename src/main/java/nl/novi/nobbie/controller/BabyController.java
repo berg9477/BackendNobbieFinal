@@ -43,6 +43,7 @@ public class BabyController {
 
     //all Post mappings
     @PostMapping("/babies")
+    //Creates a new baby for a specific user
     public ResponseEntity<Object> createBaby(@Valid @RequestBody BabyDto bDto, BindingResult br) {
         //first check if the request body is filled in correct and has no validation errors
         if (br.hasErrors()) {
