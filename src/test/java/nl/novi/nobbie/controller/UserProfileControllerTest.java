@@ -35,11 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {NobbieFinalApplication.class})
 class UserProfileControllerTest {
 
-    //insert general testdata
-    UserProfileDto user = new UserProfileDto(321L, "test01", "first", "last", "email@grs.nl", "1234567", Role.USER, 1);
-    List<UserProfileDto> users = List.of(user);
-    UserProfile u = new UserProfile(user.getUsername(), user.getFirstname(), user.getLastname(), user.getEmailaddress(), user.getPassword(), user.getUserId(), user.getRole(), user.getEnabled());
-    @Autowired
+   @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
@@ -55,6 +51,11 @@ class UserProfileControllerTest {
     private DataSource dataSource;
     @MockBean
     private ImageService imageService;
+
+    //insert general testdata
+    UserProfileDto user = new UserProfileDto(321L, "test01", "first", "last", "email@grs.nl", "1234567", Role.USER, 1);
+    List<UserProfileDto> users = List.of(user);
+    UserProfile u = new UserProfile(user.getUsername(), user.getFirstname(), user.getLastname(), user.getEmailaddress(), user.getPassword(), user.getUserId(), user.getRole(), user.getEnabled());
 
     @Test
     @WithMockUser(username = "admin", authorities = {"0"})

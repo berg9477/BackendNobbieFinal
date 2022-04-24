@@ -33,11 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {NobbieFinalApplication.class})
 class SocialMediaAccountControllerTest {
 
-
-    //insert general testdata
-    UserProfile user = new UserProfile("username", "first", "last", "email@grs.nl", "123", 321L, Role.USER, 1);
-    SocialMediaAccountDto SMADto = new SocialMediaAccountDto(123L, user, MediaType.Facebook);
-    List<SocialMediaAccountDto> SMAList = List.of(SMADto);
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -54,6 +49,11 @@ class SocialMediaAccountControllerTest {
     private DataSource dataSource;
     @MockBean
     private ImageService imageService;
+
+    //insert general testdata
+    UserProfile user = new UserProfile("username", "first", "last", "email@grs.nl", "123", 321L, Role.USER, 1);
+    SocialMediaAccountDto SMADto = new SocialMediaAccountDto(123L, user, MediaType.Facebook);
+    List<SocialMediaAccountDto> SMAList = List.of(SMADto);
 
     @Test
     @WithMockUser(username = "admin", authorities = {"0"})
