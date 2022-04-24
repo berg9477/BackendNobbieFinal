@@ -145,8 +145,6 @@ class BabyControllerTest {
 
         //set up request body JSON
         String content = objectMapper.writeValueAsString(baby);
-        content = content.replace("}", ",\"userProfile\":");
-        content += objectMapper.writeValueAsString(user) + "}";
 
         //execute test
         mockMvc.perform(post("/babies")

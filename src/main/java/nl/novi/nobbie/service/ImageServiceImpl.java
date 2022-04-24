@@ -30,7 +30,9 @@ public class ImageServiceImpl implements ImageService {
             try { //Saving the image
                 img.content = file.getBytes();
                 img.setUser(up);
+                up.setPicture(img);
                 repos.save(img);
+                upRepos.save(up);
             } catch (IOException iex) {
                 throw new Exception("Error while uploading image...");
             } catch (Exception ex) {
@@ -49,6 +51,7 @@ public class ImageServiceImpl implements ImageService {
         if (this.upRepos.findById(userId).isPresent()) {
             UserProfile up = this.upRepos.findById(userId).get();
             Image img = up.getPicture();
+            System.out.println(img);
             if (img == null) { //check if image was found
                 throw new Exception("Image not found");
             } else {

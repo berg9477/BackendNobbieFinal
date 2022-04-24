@@ -1,6 +1,7 @@
 package nl.novi.nobbie.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import nl.novi.nobbie.model.Gender;
 import nl.novi.nobbie.model.UserProfile;
@@ -24,6 +25,5 @@ public class BabyDto {
     @NotNull(message = "Expected can not be empty")
     private final Boolean expected;
 
-    @JsonIgnore
     private final UserProfile user;
 }

@@ -170,7 +170,9 @@ public class UserProfile {
     }
 
     @JsonIgnore
-    public Image getPicture() {return picture;    }
+    public Image getPicture() {
+        return this.picture;
+    }
 
     public void setPicture(Image picture) {
         this.picture = picture;

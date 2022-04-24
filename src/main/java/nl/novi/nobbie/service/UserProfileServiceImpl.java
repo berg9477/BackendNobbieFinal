@@ -83,17 +83,20 @@ public class UserProfileServiceImpl implements UserProfileService {
         if (this.repos.findById(id).isPresent()) {
             UserProfile up = this.repos.findById(id).get();
             BabyName name = this.bnRepos.getById(nameId);
-            if (name.getName() == null) {
-                throw new Exception("No names found for id: " + nameId);
+            //step 2 check if user didn't save this name already
+            for (BabyName bn : up.getSavedNamesList()) {
+                if (bn.getName().equals(name.getName())) {
+                    throw new Exception("User has already saved this name: " + name.getName());
+                }
             }
-            //step 2 Save name
+            //step 3 Save name
             up.addBabyNameToList(name);
             repos.save(up);
-            //step 3 Check if user has connection
+            //step 4 Check if user has connection
             Long conn = up.getConnection();
-            UserProfile connection = this.repos.findById(conn).isPresent() ? this.repos.findById(conn).get() : null;
+            UserProfile connection = conn != null && this.repos.findById(conn).isPresent() ? this.repos.findById(conn).get() : null;
             if (connection != null) {
-                //step 4 Check if name is also on connections list
+                //step 5 Check if name is also on connections list
                 for (BabyName bn : connection.getSavedNamesList()) {
                     if (bn.getName().equals(name.getName())) {
                         ret = true; //if both saved the same name, return true

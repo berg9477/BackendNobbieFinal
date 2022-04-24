@@ -90,7 +90,7 @@ public class UserProfileController {
             Boolean match = service.saveBabyName(id, babyNameId);
             return new ResponseEntity<>(match, HttpStatus.OK);
         } catch (Exception ex) { //Catch any errors while saving names
-            return new ResponseEntity<>("Retrieving list of names for user failed: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Saving name for user failed: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
