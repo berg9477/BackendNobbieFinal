@@ -100,7 +100,7 @@ class UserProfileControllerTest {
         String content = objectMapper.writeValueAsString(user2);
 
         //execute test
-        mockMvc.perform(post("/createUser")
+        mockMvc.perform(post("/user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andDo(print())
@@ -118,7 +118,7 @@ class UserProfileControllerTest {
         String content = objectMapper.writeValueAsString(user);
 
         //execute test
-        mockMvc.perform(post("/createUser")
+        mockMvc.perform(post("/user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andDo(print())
@@ -136,7 +136,7 @@ class UserProfileControllerTest {
         String content = objectMapper.writeValueAsString(user);
 
         //execute test
-        mockMvc.perform(post("/createUser")
+        mockMvc.perform(post("/user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andDo(print())
@@ -205,7 +205,7 @@ class UserProfileControllerTest {
         Mockito.doThrow(Exception.class).when(service).deleteById(1000L);
 
         //execute test
-        mockMvc.perform(MockMvcRequestBuilders.delete("/deleteUser")
+        mockMvc.perform(MockMvcRequestBuilders.delete("/user")
                         .param("id", "1000"))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
@@ -216,7 +216,7 @@ class UserProfileControllerTest {
     void deleteUserById() throws Exception {
 
         //execute test
-        mockMvc.perform(MockMvcRequestBuilders.delete("/deleteUser")
+        mockMvc.perform(MockMvcRequestBuilders.delete("/user")
                         .param("id", "1000"))
                 .andDo(print())
                 .andExpect(status().isOk());

@@ -59,7 +59,7 @@ public class UserProfileController {
     }
 
     //All post mappings
-    @PostMapping("/createUser")
+    @PostMapping("/user")
     //Creates a new UserProfile
     public ResponseEntity<Object> createNewUser(@Valid @RequestBody UserProfileDto upDto, BindingResult br) {
         //first check if the request body is filled in correct and has no validation errors
@@ -95,7 +95,7 @@ public class UserProfileController {
     }
 
     //all delete mappings
-    @DeleteMapping("/deleteUser")
+    @DeleteMapping("/user")
     //Deletes a user profile for a specific user
     public ResponseEntity<Object> deleteUserById(@RequestParam Long id) {
         try {

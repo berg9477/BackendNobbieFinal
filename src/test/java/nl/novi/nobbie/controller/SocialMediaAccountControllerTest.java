@@ -84,7 +84,7 @@ class SocialMediaAccountControllerTest {
 
     @Test
     @WithMockUser(username = "admin", authorities = {"0"})
-    public void createNewSMAForUser() throws Exception {
+    public void createNewSMAForUserWithAdminAuthority() throws Exception {
 
         //Create SMA for mocking createSMA service
         SocialMediaAccount SMA = new SocialMediaAccount();
@@ -105,6 +105,30 @@ class SocialMediaAccountControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated());
     }
+    @Test
+    @WithMockUser(username = "user", authorities = {"1"})
+    public void createNewSMAForUserWithUserAuthority() throws Exception {
+
+        //Create SMA for mocking createSMA service
+        SocialMediaAccount SMA = new SocialMediaAccount();
+        SMA.setId(SMADto.getId());
+        SMA.setUserId(SMADto.getUser());
+        SMA.setSocialMediaType(SMADto.getSocialMediaType());
+
+        //Given
+        Mockito.when(service.createSMA(SMADto)).thenReturn(SMA);
+
+        //Map input for JSON Request body
+        String content = objectMapper.writeValueAsString(SMADto);
+
+        //execute test
+        mockMvc.perform(post("/socialMediaAccounts")
+                        .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andDo(print())
+                .andExpect(status().isCreated());
+    }
+
 
     @Test
     @WithMockUser(username = "admin", authorities = {"0"})
@@ -143,7 +167,7 @@ class SocialMediaAccountControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "admin", authorities = {"0"})
+    @WithMockUser(username = "user", authorities = {"1"}) //Admin doesn't have the authority to generate a social media message
     void generateSocialMediaMessageForUser() throws Exception {
 
         //given

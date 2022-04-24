@@ -2,6 +2,7 @@ package nl.novi.nobbie.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -32,11 +33,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/babynames").hasAuthority("0") //ONLY for POST
+                .antMatchers(HttpMethod.POST,"/babyNames").hasAuthority("0")
+                .antMatchers(HttpMethod.GET,"/socialMediaAccounts").hasAuthority("0")
+                .antMatchers(HttpMethod.GET, "/babies").hasAuthority("0")
+                .antMatchers(HttpMethod.DELETE,"/user").hasAuthority("0")
                 .antMatchers("/users").hasAuthority("0")
-                .antMatchers("/user").hasAuthority("0")
-                .antMatchers("/socialMediaAccounts").hasAuthority("0") //ONLY for POST
-                .antMatchers("/babies").hasAuthority("0") //only for POST
+                .antMatchers("/resetPassword").hasAuthority("0")
+                .antMatchers("/socialMediaMessage").hasAuthority("1") //Only service the Admin can't use
                 .antMatchers("/**").hasAnyAuthority("0", "1")
                 .anyRequest()
                 .authenticated()
