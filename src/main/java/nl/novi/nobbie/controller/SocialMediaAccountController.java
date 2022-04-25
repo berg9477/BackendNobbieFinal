@@ -60,7 +60,7 @@ public class SocialMediaAccountController {
                 service.createSMA(SMADto);
                 return new ResponseEntity<>("Social media account created!", HttpStatus.CREATED);
             } catch (Exception ex) { //Catch any errors while creating social media account
-                return new ResponseEntity<>("creating social media account failed: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("creating social media account failed: " + ex.getMessage(), HttpStatus.NOT_FOUND);
             }
         }
     }
