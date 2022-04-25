@@ -32,7 +32,7 @@ public class UserProfileController {
             List<UserProfileDto> up = service.getAllUsers();
             return new ResponseEntity<>(up, HttpStatus.OK);
         } catch (Exception ex) { //Catch any error while retrieving list of all users
-            return new ResponseEntity<>("Retrieving list of users failed: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Retrieving list of users failed: " + ex.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -43,7 +43,7 @@ public class UserProfileController {
             UserProfileDto up = service.getUser(id);
             return new ResponseEntity<>(up, HttpStatus.OK);
         } catch (Exception ex) { //Catch any error while retrieving user for id
-            return new ResponseEntity<>("Retrieving user failed: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Retrieving user failed: " + ex.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 

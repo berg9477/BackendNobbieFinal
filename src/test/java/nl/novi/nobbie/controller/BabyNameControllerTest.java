@@ -80,7 +80,7 @@ class BabyNameControllerTest {
         //execute test
         mockMvc.perform(get("/babyNames"))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andExpect(content().string("Retrieving list of names failed: null"));
     }
 

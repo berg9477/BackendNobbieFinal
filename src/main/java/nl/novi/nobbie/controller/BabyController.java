@@ -26,7 +26,7 @@ public class BabyController {
             List<BabyDto> babies = service.getAllBabies();
             return new ResponseEntity<>(babies, HttpStatus.OK);
         } catch (Exception ex) { //Catch any error while retrieving list of all babies
-            return new ResponseEntity<>("Retrieving list of babies failed: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Retrieving list of babies failed: " + ex.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
