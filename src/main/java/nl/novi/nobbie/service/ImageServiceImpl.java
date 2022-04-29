@@ -51,7 +51,6 @@ public class ImageServiceImpl implements ImageService {
         if (this.upRepos.findById(userId).isPresent()) {
             UserProfile up = this.upRepos.findById(userId).get();
             Image img = up.getPicture();
-            System.out.println(img);
             if (img == null) { //check if image was found
                 throw new Exception("Image not found");
             } else {

@@ -190,6 +190,4 @@ public class UserProfileServiceImpl implements UserProfileService {
             throw new Exception("No user found for id: " + id);
         }
     }
-
-
 }
