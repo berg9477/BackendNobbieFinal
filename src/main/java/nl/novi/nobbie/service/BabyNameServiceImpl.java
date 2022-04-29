@@ -72,7 +72,6 @@ public class BabyNameServiceImpl implements BabyNameService {
             return this.repos.save(bn);
         } else {
             throw new Exception("Name already exists: " + babyNameDto.getName());
-
         }
     }
 }

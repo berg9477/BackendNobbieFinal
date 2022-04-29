@@ -77,7 +77,7 @@ public class SocialMediaAccountServiceImpl implements SocialMediaAccountService 
             sb.append(weeksLeft);
             sb.append(" weeks left and then it's time!");
             sb.append("\n");
-            sb.append("#nobbie #countdown #pragnent #babycomming");
+            sb.append("#nobbie #countdown #pragnant #babycoming");
             return sb.toString();
         } else {
             throw new Exception("No user found for userId: " + id);

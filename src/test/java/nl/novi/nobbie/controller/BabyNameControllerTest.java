@@ -111,7 +111,7 @@ class BabyNameControllerTest {
         mockMvc.perform(get("/nameStartsWith")
                         .param("ch", "y"))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andExpect(content().string("Retrieving list of names failed: null"));
 
     }
@@ -142,7 +142,7 @@ class BabyNameControllerTest {
         mockMvc.perform(get("/namesSearch")
                         .param("input", "hallloo"))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andExpect(content().string("Retrieving list of names failed: null"));
 
     }
